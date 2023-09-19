@@ -8,6 +8,10 @@ class FourthPages extends StatefulWidget {
 class _FourthPagesState extends State<FourthPages> {
   final _formKey = GlobalKey<FormState>();
   String _message = '';
+  String name= '';
+  String cardNumber= '';
+  String cvv= '';
+  String validDate= '';
 
   @override
   Widget build(BuildContext context) {
@@ -163,13 +167,27 @@ class _FourthPagesState extends State<FourthPages> {
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
+                  Navigator.push(
+                    context,
+                     MaterialPageRoute(
+                     builder: (context) => ConfirmPayment(
+                      detail: PaymentDetail(
+                        name, 
+                        cardNumber, 
+                        cvv, 
+                        validDate,
+                       ),
+                      ),
+                    ),
+                   );
+                }
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('$_message'),
                     ),
                   );
-                }
-              },
+                },
+              
               child: Text(
                 'PAYMENT',
                 style: TextStyle(
@@ -182,10 +200,42 @@ class _FourthPagesState extends State<FourthPages> {
                 primary: Colors.lightGreen,
                  onPrimary: Colors.white,
               ),
+            
             ),
           ],
         ),
       ),
     );
   }
+}
+class ConfirmPayment extends StatelessWidget{
+  final PaymentDetail detail;
+
+  const ConfirmPayment({super.key,required this.detail});
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title:Text('Confirm payment'),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(detail.name),
+          Text(detail.cardNumber),
+          Text(detail.cvv),
+          Text(detail.validDate),
+        ],
+       ),
+    );
+  }
+}
+class PaymentDetail {
+  final String name;
+  final String cardNumber;
+  final String cvv;
+  final String validDate;
+
+  const PaymentDetail(this.name, this.cardNumber,this.cvv,this.validDate);
 }

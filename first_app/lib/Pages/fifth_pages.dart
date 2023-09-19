@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 class FifthPage extends StatefulWidget {
   @override
   State<FifthPage> createState() => _FifthPageState();
@@ -7,6 +8,7 @@ class _FifthPageState extends State<FifthPage> {
   String _gender = '';
   String _favColor='';
   String _pet = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,65 +21,74 @@ class _FifthPageState extends State<FifthPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           ElevatedButton(
-              onPressed: () async {
-                var choices = await Navigator.push(
+              onPressed: ()  {
+                Navigator.push(
                   context, 
                     MaterialPageRoute(
                       builder: (context) => PreferencePage(
+                        type: 'gender',
                         choices: ['Female',
                         'Male',
                         'N','LGBTQ'],
                       ),
                     ),
                   );
-                  setState(() {
-                    _gender = choices;
-                  });
               },
-              child: Text("Select your gender - ${_favColor}")),
-              
+              child:Consumer<PreferenceModel>(
+                builder : (context,value,child){
+                return Text("Select your gender - ${ _gender}");
+         },
+       ),
+      ),
           ElevatedButton(
-              onPressed: () async {
-                var choices = await Navigator.push(
+              onPressed: ()  {
+                 Navigator.push(
                   context, 
                     MaterialPageRoute(
                       builder: (context) => PreferencePage(
+                        type: 'favColor',
                         choices: ['Red',
                         'Yellow',
                         'Green'],
                       ),
                     ),
                   );
-                  setState(() {
-                    _gender = choices;
-                  });
-              },
-              child: Text("Select your colour - ${_gender}")),
+                  },
+                  child: Consumer<PreferenceModel>(
+                    builder:(context,value,child){
+                return Text("Select your color - ${_favColor}");
+                    },
+                    ),
+                 ),
+             
           ElevatedButton(
-              onPressed: () async {
-                var choices = await Navigator.push(
+              onPressed: () {
+                Navigator.push(
                   context, 
                     MaterialPageRoute(
                       builder: (context) => PreferencePage(
+                       type: 'Pet',
                         choices: ['Dog',
                         'Cat',
                         'Rabbit'],
                       ),
                     ),
-                  );
-                  setState(() {
-                    _gender = choices;
-                  });
+                  );},
+                  child: Consumer<PreferenceModel>(
+                    builder:(context,value,child){
+                return Text("Select your pet - ${_pet}");
               },
-              child: Text("Select your pet - ${_pet}")),
-        ],
       ),
+  ),]
+    ),
     );
   }
 }
 class PreferencePage extends StatelessWidget {
 final List<String> choices ;
-const PreferencePage({super.key, required this.choices});
+final String type;
+
+const PreferencePage({super.key,required this.type, required this.choices});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,6 +103,15 @@ const PreferencePage({super.key, required this.choices});
               itemBuilder: (context,index){
                 return ElevatedButton(
                 onPressed: (){
+                  if(type== 'gender'){
+                    context.read<PreferenceModel>().gender = choices[index];
+                  }
+                  if(type=='favColor'){
+                    context.read<PreferenceModel>().favColor = choices[index];
+                  }
+                  if(type=='pet'){
+                    context.read<PreferenceModel>().pet = choices[index];
+                  }
                   Navigator.pop(context,choices[index]);
                 },
                 child: Text('${choices[index]}'),
@@ -102,6 +122,27 @@ const PreferencePage({super.key, required this.choices});
     );
   }
 }
-class PreferenceDetails {}
+class PreferenceModel extends ChangeNotifier {
+String _gender = '';
+String _favColor='';
+String _pet = '';
+ get gender => this._gender;
+ set gender(value) {
+this._gender = value;
+notifyListeners();
+ } 
+
+ get favColor => this._favColor;
+ set favColor(value){
+ this._favColor = value;
+notifyListeners();
+ } 
+
+ get pet => this._pet;
+ set pet(value) {
+  this._pet = value;
+  notifyListeners();
+ } 
+}
 
  

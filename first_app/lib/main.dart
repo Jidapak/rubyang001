@@ -5,9 +5,15 @@ import 'package:first_app/Pages/home_page.dart';
 import 'package:first_app/Pages/second_pages.dart';
 import 'package:first_app/Pages/third_pages.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [
+    ChangeNotifierProvider(create: (context) => PreferenceModel()),
+    ],
+     child: const MyApp()
+     ));
 }
 
 class MyApp extends StatelessWidget {
