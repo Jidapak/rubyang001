@@ -5,20 +5,22 @@ import 'package:provider/provider.dart';
 class history extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final orderRequestmodel = Provider.of<OrderRequestModel>(context);
-    print(orderRequestmodel.orders);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('ยืนยันคำสั่งซื้อ'),
-      ),
-      body: ListView.builder(
-      itemCount: orderRequestmodel.orders.length,
-      itemBuilder: (context, index) {
-        final order = orderRequestmodel.orders[index];
-        return OrderItem(order: order);
-      },
-    ),
 
+    return Consumer<OrderRequestModel>(
+      builder : (context,orderRequestmodel,child){
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('ยืนยันคำสั่งซื้อ'),
+        ),
+        body: ListView.builder(
+        itemCount: orderRequestmodel.orders.length,
+        itemBuilder: (context, index) {
+          final order = orderRequestmodel.orders[index];
+          return OrderItem(order: order);
+        },
+      ),
+      );
+      }
     );
   }
 }

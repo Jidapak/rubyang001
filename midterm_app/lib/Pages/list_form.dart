@@ -196,7 +196,7 @@ class _ListTradeState extends State<List_form> {
                       ),
                     ),
                   ),
-                )
+                ), 
               ],
             ),
           ),
@@ -206,6 +206,7 @@ class _ListTradeState extends State<List_form> {
   }
 }
 class OrderRequestModel extends ChangeNotifier {
+  
   final List<Map<String, dynamic>> _orders = [
     {
       'no': '10001',
