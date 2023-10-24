@@ -73,13 +73,15 @@ class _FifthPageState extends State<FifthPage> {
                         'Rabbit'],
                       ),
                     ),
-                  );},
+                  );
+                  },
                   child: Consumer<PreferenceModel>(
                     builder:(context,value,child){
                 return Text("Select your pet - ${_pet}");
               },
       ),
-  ),]
+  ),
+  ]
     ),
     );
   }

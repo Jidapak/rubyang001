@@ -3,6 +3,7 @@ import 'package:first_app/Pages/first_pages.dart';
 import 'package:first_app/Pages/fourth_pages.dart';
 import 'package:first_app/Pages/home_page.dart';
 import 'package:first_app/Pages/second_pages.dart';
+import 'package:first_app/Pages/sixth_pages.dart';
 import 'package:first_app/Pages/third_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -29,12 +30,13 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute:'/home' ,
       routes : {
-        '/home':(context) => HomePage(),
+      '/home':(context) => HomePage(),
       '/1': (context) => FirstPage(),
       '/2': (context) => SecondPage(),
       '/3': (context) => ThirdPage(),
       '/4': (context) => FourthPages(),
       '/5': (context) => FifthPage(),
+      '/6':(context) => SixthPage(),
       },
     );
   }
