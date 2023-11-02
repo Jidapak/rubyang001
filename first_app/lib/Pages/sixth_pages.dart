@@ -38,6 +38,10 @@ class _SixthPageState extends State<SixthPage> {
         title: Text(todos[index].title),
         value: todos[index].completed,
         onChanged: (value){
+          setState(() {
+            todos[index].completed = value!;
+            controller.updateTodo(todos[index]); //check uncheck Box 
+          });
          },
        );
       }

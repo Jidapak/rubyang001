@@ -18,4 +18,7 @@ class TodoController {
     onSyncController.add(false);   
     return todos;
   }
-}
+ void updateTodo(Todo todo) async {
+    service.updateTodo(todo);
+ }
+   }
