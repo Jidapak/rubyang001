@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "282212325066",
+    "project_id": "myloginapprubber",
+    "storage_bucket": "myloginapprubber.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:282212325066:android:dfb884232d796a34504633",
+        "android_client_info": {
+          "package_name": "com.example.rub_yang"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCB3SCg-nDdpn23WJOtiLiut9TWJMiQibQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
