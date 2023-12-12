@@ -8,7 +8,8 @@ class News_Kn extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Colors.brown,
         appBar: AppBar(
-          title: Text('Tabbar'),
+          title: Text('Tabbar'
+          ),
           titleTextStyle: 
           TextStyle(
             fontSize: 20.0,

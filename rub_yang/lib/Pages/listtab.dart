@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:rub_yang/Pages/detail2.dart';
+import 'package:rub_yang/Pages/farmerInfor.dart';
+import 'package:rub_yang/storeview/homestore.dart';
+import 'package:rub_yang/storeview/notiorder.dart';
+import 'package:rub_yang/storeview/pricevalue.dart';
 
 class ListItem {
   final String title;
   final String details2;
   ListItem({required this.title, required this.details2});
 }
-
 class ListTab extends StatelessWidget {
   final List<ListItem> entries = [
     ListItem(
@@ -90,19 +93,45 @@ class ListTab extends StatelessWidget {
                 return Card(
                   elevation: 5,
                   margin:
-                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                  EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                   child: ListTile(
                     title: Text(entries[index].title),
                     onTap: () {
-                      Navigator.push(
+                      if(index == 0){
+                    Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Details2(
-                            PName: entries[index].title,
-                            PDescription: entries[index].details2,
+                          builder: (context) => HomeStore(
                           ),
                         ),
                       );
+                      } else if (index == 1){
+                        Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => NotiOrder(
+                          ),
+                        ),
+                       );
+                      }
+                      else if (index == 2){
+                        Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HomeStore(
+                          ),
+                        ),
+                       );
+                      }
+                      else if (index == 3){
+                        Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PriceValue(
+                          ),
+                        ),
+                       );
+                      }
                     },
                   ),
                 );
@@ -126,25 +155,25 @@ class ListTab extends StatelessWidget {
           ), 
           Expanded(
             child: ListView.builder(
-              itemCount: entries2.length,
+              itemCount: entries.length,
               itemBuilder: (context, index) {
                 return Card(
                   elevation: 5,
                   margin:
-                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                  EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                   child: ListTile(
-                    title: Text(entries2[index].title),
+                    title: Text(entries[index].title),
                     onTap: () {
-                      Navigator.push(
+                      if(index == 0){
+                    Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Details2(
-                            PName: entries2[index].title,
-                            PDescription: entries2[index].details2,
+                          builder: (context) => Farmer_Infor(
                           ),
                         ),
                       );
-                    },
+                    }
+                  }, 
                   ),
                 );
               },

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rub_yang/Pages/detail.dart';
+import 'package:rub_yang/Pages/detail2.dart';
+import 'package:rub_yang/Pages/farmerInfor.dart';
 import 'package:rub_yang/Pages/listtab.dart';
 import 'package:rub_yang/Pages/farmerform.dart';
 import 'package:rub_yang/Pages/liststore.dart';
-import 'package:rub_yang/Pages/pricevalue.dart';
+import 'package:rub_yang/storeview/pricevalue.dart';
 import 'package:rub_yang/Pages/home_r.dart';
 import 'package:rub_yang/Pages/landing.dart';
 import 'package:rub_yang/Pages/list_trade.dart';
@@ -48,7 +51,7 @@ class MyApp extends StatelessWidget {
         '/8':(context) => HomeFactory(),
         '/9':(context) => LandingPage(),
         '/10':(context)=> ListTab(),
-        '/11': (context) => ConfirmO(),
+        '/11': (context) => Farmer_Infor(),
       },
     );
   }

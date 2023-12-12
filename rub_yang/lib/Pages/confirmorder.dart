@@ -11,7 +11,8 @@ class ConfirmO extends StatelessWidget {
         appBar: AppBar(
           title: Text('ยืนยันคำสั่งซื้อ',
            style: TextStyle(
-           fontSize: 16.0,
+           fontSize: 20.0,
+           fontWeight: FontWeight.bold,
            color: Colors.brown,
             ),
           ),
@@ -39,7 +40,7 @@ class OrderItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ListTile(
-            title: Text('เลขที่สมาชิก: ${order['no']}'),
+            title: Text('เลขที่คำสั่งซื้้อ: ${order['no']}'),
             subtitle: Text('ราคา: ${order['price']} บาท'),
           ),
           ListTile(
@@ -50,8 +51,8 @@ class OrderItem extends StatelessWidget {
             title: Text('เวลาที่จะมาส่ง: ${order['time']}'),
           ),
           ListTile(
-            title: Text('รูปแบบยาง: ${order['typeproduct']}'),
-            subtitle: Text('รูปแบบการซื้อขาย: ${order['typetrade']}'),
+            title: Text('รูปแบบยาง: ${order['radioTrade1']}'),
+            subtitle: Text('รูปแบบการซื้อขาย: ${order['radioTrade2']}'),
           ),
         ],
       ),

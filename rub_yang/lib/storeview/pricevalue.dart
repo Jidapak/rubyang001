@@ -39,11 +39,17 @@ class _PriceValueState extends State<PriceValue> {
           children: <Widget>[
             Text(
               'ราคาประจำวัน:',
-              style: TextStyle(fontSize: 18.0),
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18.0),
             ),
             Text(
               '\$${currentPrice.toStringAsFixed(2)}',
-              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 24.0, 
+                fontWeight: FontWeight.bold,
+                color: Colors.white
+                ),
             ),
             SizedBox(height: 20),
             ElevatedButton(
@@ -51,8 +57,21 @@ class _PriceValueState extends State<PriceValue> {
                 double newPrice = 40.00;
                 updatePrice(newPrice);
               },
-              child: Text('อัปเดตราคาประจำวัน'),
+              child: Text('อัปเดตราคา',
+               style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.brown,
+            )
+              ),
             ),
+           Text('ราคาย้อนหลัง7วัน' ,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            )
+           ),
             Expanded(
               child: ListView.builder(
                 itemCount: 7,
@@ -60,8 +79,15 @@ class _PriceValueState extends State<PriceValue> {
                   return Card(
                     child: ListTile(
                       leading: CircleAvatar(),
-                      title: Text('ราคาวันที่ ${index + 1} :\   __'),
+                      title: Text(
+                        'ราคาวันที่ ${index + 1} :\   __',
+                        style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.brown,
+                      ),
                     ),
+                  ),
                   );
                 },
               ),

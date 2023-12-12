@@ -2,9 +2,9 @@ import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elegant_number_button/flutter_elegant_number_button.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:rub_yang/Pages/farmerInfor.dart';
 class FarmerForm extends StatefulWidget {
   const FarmerForm({Key? key}) : super(key: key);
-
   @override
   State<FarmerForm> createState() => _FarmerInfState();
 }
@@ -21,12 +21,8 @@ class _FarmerInfState extends State<FarmerForm> {
   int count2 = 0;
   int count3 = 0;
   bool isPhoneValidated = false;
-  int _radioValue11 = 0;
-  int _radioValue12 = 0;
-  int _radioValue21 = 0;
-  int _radioValue22 = 0;
-  int _radioValue23 = 0;
-  int _radioValue24 = 0;
+  String _radioValue11 = '';
+  String _radioValue12 = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,13 +70,16 @@ class _FarmerInfState extends State<FarmerForm> {
                               return null;
                             },
                             onSaved: (newValue) {
+                              setState(() {
                               namefarmer = newValue!;
                             },
+                           );
+                            }
                           ),
                         ),
                        const SizedBox(width: 10.0),
                         Expanded(
-                      child: TextFormField(
+                        child: TextFormField(
                         decoration: InputDecoration(
                           labelText: 'นามสกุล',
                           hintText: 'กรอกนามสกุล',
@@ -93,8 +92,11 @@ class _FarmerInfState extends State<FarmerForm> {
                           return null;
                         },
                         onSaved: (newValue) {
+                            setState(() {
                           lastnfarmer = newValue!;
                         },
+                        );
+                       },
                       ),
                     ),
                   ]
@@ -113,7 +115,10 @@ class _FarmerInfState extends State<FarmerForm> {
                               return null;
                             },
                             onSaved: (newValue) {
+                              setState(() {
                               location = newValue!;
+                            },
+                              );
                             },
                           ),
                         ),
@@ -156,7 +161,7 @@ class _FarmerInfState extends State<FarmerForm> {
                       onChanged: (phone) {
                         print(phone.completeNumber); 
                       },
-                                    validator: (value) {
+                      validator: (value) {
                       if (value!.isValidNumber()) {
                         setState(() {
                             isPhoneValidated = true;
@@ -257,7 +262,7 @@ class _FarmerInfState extends State<FarmerForm> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'จำนวนต้นที่อายุเกิน20ปีในสวนยาง',
+                        'จำนวนต้นที่อายุเกิน25ปีในสวนยาง',
                         style: TextStyle(
                           fontSize: 16.0,
                          color: Colors.black,
@@ -292,11 +297,11 @@ class _FarmerInfState extends State<FarmerForm> {
                     Row(
                     children: <Widget>[
                     Radio(
-                      value: 0,
+                      value: 'เข้าร่วม',
                       groupValue: _radioValue11,
                       onChanged: (value) {
                         setState(() {
-                          _radioValue11 = value as int;
+                          _radioValue11 = value.toString();
                         });
                       },
                     ),
@@ -308,11 +313,11 @@ class _FarmerInfState extends State<FarmerForm> {
                           ),
                         ), 
                     Radio(
-                      value: 1,
-                      groupValue: _radioValue12,
+                      value: 'ไม่เข้าร่วม',
+                      groupValue: _radioValue11,
                       onChanged: (value) {
                         setState(() {
-                          _radioValue12 = value as int;
+                          _radioValue11 = value.toString();
                         });
                       },
                     ),
@@ -338,11 +343,11 @@ class _FarmerInfState extends State<FarmerForm> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                     Radio(
-                      value: 0,
-                      groupValue: _radioValue21,
+                      value: 'เจ้าของสวน',
+                      groupValue: _radioValue12,
                       onChanged: (value) {
                         setState(() {
-                          _radioValue21 = value as int;
+                          _radioValue12 = value.toString();
                         });
                       },
                     ),
@@ -354,11 +359,11 @@ class _FarmerInfState extends State<FarmerForm> {
                           ),
                         ), 
                       Radio(
-                      value: 1,
-                      groupValue: _radioValue22,
+                      value: 'เป็นผู้แทน',
+                      groupValue: _radioValue12,
                       onChanged: (value) {
                         setState(() {
-                          _radioValue22 = value as int;
+                          _radioValue12 = value.toString();
                         });
                       },
                     ),
@@ -370,11 +375,11 @@ class _FarmerInfState extends State<FarmerForm> {
                           ),
                         ),     
                     Radio(
-                      value: 0,
-                      groupValue: _radioValue23,
+                      value: 'มีหลักฐาน',
+                      groupValue: _radioValue12,
                       onChanged: (value) {
                         setState(() {
-                          _radioValue23 = value as int;
+                          _radioValue12 = value.toString();
                         });
                       },
                     ),
@@ -386,16 +391,16 @@ class _FarmerInfState extends State<FarmerForm> {
                           ),
                         ), 
                     Radio(
-                      value: 1,
-                      groupValue: _radioValue24,
+                      value: 'ไม่มีหลักฐาน',
+                      groupValue: _radioValue12,
                       onChanged: (value) {
                         setState(() {
-                          _radioValue24 = value as int;
+                          _radioValue12 = value.toString();
                         });
                       },
                     ),
                     Text(
-                          '4.เป็นและไม่หลักฐานความยินยอม',
+                          '4.เป็นแต่ไม่มีหลักฐานความยินยอม',
                           style: TextStyle(
                             fontSize: 16,
                             color: Colors.black,
@@ -403,32 +408,24 @@ class _FarmerInfState extends State<FarmerForm> {
                         ), 
                   ],
                 ),
-                const SizedBox(height: 20.0),
-               Container(
-                color: Colors.transparent,
-                height: 70,
-                width: 500,
-                child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                onPressed: () { },
-                child: Text(
-                  'บันทึก',
-                    style : TextStyle(
-                    fontSize: 18, 
-                   ),
+                Padding( 
+                    padding: const EdgeInsets.all(50.0),
+                   child: ElevatedButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          _formKey.currentState!.save();
+                      }
+                       Navigator.pushNamed(context, '/11');
+                      },
+                      child: Text('บันทึก', 
+                       style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.brown,
+                    ),
+                    ),
                   ),
-                style: ElevatedButton.styleFrom(
-                side: 
-                BorderSide(
-                  width:6, 
-                  color: Colors.brown,
-                  ),
-                 ),
-                 ),
                 ),
-               ),
-              ],
+               ],
               ),
              ),
             ]

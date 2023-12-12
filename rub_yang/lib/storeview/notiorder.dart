@@ -50,6 +50,10 @@ class OrderItem extends StatelessWidget {
           ),
           ListTile(
             title: Text('time: ${order['time']}'),
+            subtitle: Text('radioTrade1: ${order['radioTrade1']}')
+          ),
+          ListTile(
+            title: Text('radioTrade2: ${order['radioTrade2']}'),
           ),
         ],
       ),
