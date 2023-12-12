@@ -6,7 +6,7 @@ import 'package:jidapa_final_app/confirm.dart';
 import 'package:jidapa_final_app/listpage.dart';
 import 'package:jidapa_final_app/firebase_options.dart';
 import 'package:jidapa_final_app/homepage.dart';
-import 'package:jidapa_final_app/model.dart';
+import 'package:jidapa_final_app/model/model.dart';
 import 'package:provider/provider.dart';
 
 void main()  async {

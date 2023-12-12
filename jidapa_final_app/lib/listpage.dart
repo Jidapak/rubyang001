@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jidapa_final_app/bookingpage.dart';
-import 'package:jidapa_final_app/service.dart';
+import 'package:jidapa_final_app/model/model.dart';
+import 'package:jidapa_final_app/servicce/service.dart';
 import 'package:provider/provider.dart';
-import 'package:jidapa_final_app/model.dart';
 
 class ListPage extends StatefulWidget {
   @override
