@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rub_yang/Pages/list_trade.dart';
+import 'package:rub_yang/Pages/formtrade.dart';
 
 class FacView extends StatelessWidget {
   @override

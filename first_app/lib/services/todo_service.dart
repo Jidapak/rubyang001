@@ -1,10 +1,34 @@
 
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:first_app/models/todo_model.dart';
-import 'package:flutter/material.dart';
+
 import 'package:http/http.dart';
 
-class TodoHttpService{
+abstract class TodoService {
+  Future<List<Todo>> getTodos();
+  void updateTodo(Todo todo);
+}
+ 
+class TodoFirebaseService implements TodoService {
+  @override
+  Future<List<Todo>> getTodos() async {
+    QuerySnapshot qs =
+        await FirebaseFirestore.instance.collection('todos').get();
+    AllTodos todos = AllTodos.fromSnapshot(qs);
+    return todos.todos;
+  }
+
+  @override
+  void updateTodo(Todo todo) {
+    print('Updating todo id=${todo.id}');
+    FirebaseFirestore.instance.collection('todos').doc(todo.id).update({
+      'complete' : todo.completed,
+    });
+  }
+
+}
+class TodoHttpService implements TodoService{
   Client client = Client();
 
   Future<List<Todo>> getTodos() async{

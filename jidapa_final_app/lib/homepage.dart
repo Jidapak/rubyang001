@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jidapa_final_app/listpage.dart';
+import 'package:jidapa_final_app/realt.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -160,7 +161,14 @@ class listmovie  extends StatelessWidget{
           child: Row(
             children: [
               InkWell(
-                onTap: () {},
+                 onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => InsertPrice(),
+                    ),
+                  );
+                },
                 child: Container(
                   width: 200,
                   height: 350,

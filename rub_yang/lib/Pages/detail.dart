@@ -10,7 +10,7 @@ class Details extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
         title: Text(
-          'Surat_Rubyang',
+          'Detail',
           style: TextStyle(
             fontSize: 20.0,
             letterSpacing: 2.0,
@@ -36,18 +36,19 @@ class Details extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8.0),
                   side: BorderSide(
                   width: 4.0, 
-                  color: Colors.black
+                  color: Colors.black54,
                   ),
                   ),
                   leading: IconButton(
                   icon: const Icon(Icons.bookmark_added_rounded,
-                  color: Colors.black
+                  color: Colors.black54,
                   ),
                   onPressed: () {},
                 ),
                 title: Text(
                   PName,
                   style: const TextStyle(
+                    color: Colors.black54,
                       fontWeight: FontWeight.bold, 
                       fontSize: 18.0
                   ),
@@ -55,7 +56,7 @@ class Details extends StatelessWidget {
                 subtitle: Text(PDescription),
                 trailing: const Icon(
                   Icons.delete,
-                  color: Colors.black,
+                  color: Colors.black54,
                 ),
               ),
            ],

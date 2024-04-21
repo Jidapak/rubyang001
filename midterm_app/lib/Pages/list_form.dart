@@ -18,6 +18,7 @@ class _ListTradeState extends State<List_form> {
   
   @override
   Widget build(BuildContext context) {
+     final dropdownProvider = context.watch<DropdownProvider>();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -206,25 +207,23 @@ class _ListTradeState extends State<List_form> {
   }
 }
 class OrderRequestModel extends ChangeNotifier {
-  
   final List<Map<String, dynamic>> _orders = [
-    {
-      'no': '10001',
-      'price':'48บ.',    
-      'weight': '50กก',
-      'date':'12/10/2566',
-      'time':'12.00'
-    },
      {
+      'no': '10001',
+      'price': '48 บ.',
+      'weight': '50 กก',
+      'date': '12/10/2566',
+      'time': '12.00'
+    },
+    {
       'no': '10002',
-      'price':'45บ.',    
-      'weight':'50กก',
-      'date':'12/08/2566',
-      'time':'10.00'
+      'price': '58 บ.',
+      'weight': '110 กก',
+      'date': '09/10/2566',
+      'time': '10.00'
     },
   ];
     get orders => _orders;
-
   void addOrder({
     required String no,
     required String price,
@@ -239,6 +238,20 @@ class OrderRequestModel extends ChangeNotifier {
       'date':'$date',
       'time':'$time'
     });
+    notifyListeners();
+  }
+}
+class DropdownProvider extends ChangeNotifier {
+  String selectedProduct = 'แบบก้อน';
+  String selectedTradingType = 'ซื้อขายล่วงหน้า';
+
+  void setProduct(String product) {
+    selectedProduct = product;
+    notifyListeners();
+  }
+
+  void setTradingType(String tradingType) {
+    selectedTradingType = tradingType;
     notifyListeners();
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rub_yang/Pages/list_trade.dart';
+import 'package:rub_yang/Pages/formtrade.dart';
 
 class Spot_F extends StatelessWidget {
   final List<String> entries = ['A', 'B'];
@@ -21,11 +21,10 @@ class Spot_F extends StatelessWidget {
       ),
       body: GestureDetector(
         onTap: () {
-          // Navigate to the next page when tapped
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => List_trade(), // Replace with the next page you want to navigate to
+              builder: (context) => Formtrade(), // Replace with the next page you want to navigate to
             ),
           );
         },

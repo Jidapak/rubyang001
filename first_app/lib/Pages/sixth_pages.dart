@@ -10,7 +10,7 @@ class SixthPage extends StatefulWidget{
 class _SixthPageState extends State<SixthPage> {
   List<Todo> todos = List.empty();
   bool isLoading = false;
-  TodoController controller = TodoController(TodoHttpService());
+  TodoController controller = TodoController(TodoFirebaseService());
 
   @override
   void initState(){

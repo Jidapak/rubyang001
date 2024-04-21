@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "858608402262",
+    "project_id": "is767-2023-jidapa",
+    "storage_bucket": "is767-2023-jidapa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:858608402262:android:1fad659fe2e92e57ede0f7",
+        "android_client_info": {
+          "package_name": "com.example.first_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9Dzu4AYDEJSBGRTkPSQRfsKvXJNrtGBE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:rub_yang/Pages/detail2.dart';
+import 'package:rub_yang/Pages/confirmorder.dart';
 import 'package:rub_yang/Pages/farmerInfor.dart';
+import 'package:rub_yang/Pages/farmerevent.dart';
+import 'package:rub_yang/facview/fachistory.dart';
+import 'package:rub_yang/facview/formtofactory.dart';
+import 'package:rub_yang/facview/listfactory.dart';
+import 'package:rub_yang/facview/listkanyang.dart';
+import 'package:rub_yang/facview/statusfactory.dart';
 import 'package:rub_yang/storeview/homestore.dart';
-import 'package:rub_yang/storeview/notiorder.dart';
-import 'package:rub_yang/storeview/pricevalue.dart';
+import 'package:rub_yang/storeview/insertvalue.dart';
 
 class ListItem {
   final String title;
@@ -17,26 +22,30 @@ class ListTab extends StatelessWidget {
       details2: 'ร้านรับยาง(ออเดอร์ชาวสวน)',
     ),
     ListItem(
-      title: 'รายการส่งโรงงาน',
-      details2: 'รายการส่งโรงงานในแต่ละรอบ',
+      title: 'กรอกข้อมูลที่ส่งโรงงาน',
+      details2: 'หลังส่งโรงงานแต่ละรอบ',
     ),
-    ListItem(
-      title: 'ประวัติย้อนหลังส่งโรงงาน',
-      details2: 'ประวัติย้อนหลังส่งโรงงานแต่ละรอบ',
-    ),
+    //  ListItem(
+    //   title: 'รายการที่กำลังดำเนินการส่งโรงงาน',
+    //   details2: 'รายการที่กำลังดำเนินการส่งโรงงาน',
+    // ),
     ListItem(
       title: 'ราคาเปิด',
       details2: '1.ราคาเปิดกยทแต่ละวัน จะแบ่งเป็น \n1.1.ยางแผ่นดิบ \n1.2 น้ำยางสด ณโรงงาน\n1.3.Rss3 \n 2.ราคาที่ให้พิเศษ ',
     ),
+    ListItem(
+      title: 'คุณภาพยางพาราชาวสวน',
+      details2: 'เช็คคุณภาพควรเข้าร่วมการอบรมพัฒนาคุณภาพ?',
+    ),
   ];
  final List<ListItem> entries2 = [
     ListItem(
-      title: 'ข้อมูลชาวสวน',
-      details2: 'รายละเอียดต่างๆของชาวสวนแต่ละราย',
+      title: 'รายการต้นไม้เกิน25ปี',
+      details2: 'รายการต้นไม้เกิน25ปีของชาวสวนแต่ละรายและแต่ละแปลง(เพื่อยื่นขอทุนปลูกใหม่) \n ราคาขายไม้ตามตลาดกลาง',
     ),
     ListItem(
-      title: 'รายการต้นไม้เกิน20ปี',
-      details2: 'รายการต้นไม้เกิน20ปีของชาวสวนแต่ละรายและแต่ละแปลง(เพื่อยื่นขอทุนปลูกใหม่) \n ราคาขายไม้ตามตลาดกลาง',
+      title: 'รายชื่อชาวสวนที่จะเข้าร่วมอบรม',
+      details2: 'รายชื่อชาวสวนที่จะเข้าร่วมอบรมเพื่อพัฒนาคุณภาพยางพาราตามการยางสนับสนุน',
     ),
     ListItem(
       title: 'ประวัติย้อนหลังส่งโรงงาน',
@@ -102,6 +111,8 @@ class ListTab extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => HomeStore(
+                            storeName: 'ชื่อร้าน',
+                          dailyPrice: 100, 
                           ),
                         ),
                       );
@@ -109,7 +120,7 @@ class ListTab extends StatelessWidget {
                         Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => NotiOrder(
+                          builder: (context) =>formfactory(
                           ),
                         ),
                        );
@@ -118,19 +129,19 @@ class ListTab extends StatelessWidget {
                         Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => HomeStore(
+                          builder: (context) => InsertValue(
                           ),
                         ),
                        );
                       }
                       else if (index == 3){
-                        Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PriceValue(
-                          ),
-                        ),
-                       );
+                      //   Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => InsertValue(
+                      //     ),
+                      //   ),
+                      //  );
                       }
                     },
                   ),
@@ -155,24 +166,60 @@ class ListTab extends StatelessWidget {
           ), 
           Expanded(
             child: ListView.builder(
-              itemCount: entries.length,
+              itemCount: entries2.length,
               itemBuilder: (context, index) {
                 return Card(
                   elevation: 5,
                   margin:
                   EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                   child: ListTile(
-                    title: Text(entries[index].title),
+                    title: Text(entries2[index].title),
                     onTap: () {
                       if(index == 0){
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Farmer_Infor(
+                          builder: (context) =>ConfirmO(
                           ),
                         ),
                       );
                     }
+                    else if (index == 1){
+                        Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>Farmer_Infor(
+                          ),
+                        ),
+                       );
+                      }
+                        else if (index == 2){
+                        Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>FarmerEvent(
+                          ),
+                        ),
+                       );
+                      }
+                       else if (index == 3){
+                        Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>ListFactory(
+                          ),
+                        ),
+                       );
+                      }
+                         else if (index == 4){
+                        Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>ListKanyang(
+                          ),
+                        ),
+                       );
+                      }
                   }, 
                   ),
                 );

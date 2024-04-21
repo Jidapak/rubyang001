@@ -1,15 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Todo{
   final int userId;
-  int id; 
+  String id = ""; 
   final String title;
   bool completed;
 
-  Todo(this.userId,this.id,this.title,this.completed);
+  Todo(this.userId,this.title,this.completed);
 
   factory Todo.fromJson(Map<String,dynamic> json){
     return Todo(
       json['userId'] as int , 
-      json['id'] as int,
       json['title'] as String,
       json['completed'] as bool,
     );
@@ -27,4 +28,14 @@ class AllTodos {
 
 return AllTodos(todos);
   }
+ factory AllTodos.fromSnapshot(QuerySnapshot qs) {
+   List<Todo> todos; 
+   
+   todos = qs.docs.map((DocumentSnapshot ds){
+   Todo todo = Todo.fromJson(ds.data()as Map<String,dynamic>);
+   todo.id= ds.id;
+   return todo;
+  } ).toList();
+  return AllTodos(todos);
+ }
 }

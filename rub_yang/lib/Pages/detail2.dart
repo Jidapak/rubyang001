@@ -10,7 +10,7 @@ class Details2 extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
         title: Text(
-          'ร้านรับซื้อโรงงานและการยาง',
+          'ถาม-ตอบข้อสงสัย',
           style: TextStyle(
             fontSize: 20.0,
             letterSpacing: 2.0,
@@ -36,8 +36,9 @@ class Details2 extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8.0),
                   side: BorderSide(width: 4.0, color: Colors.black)),
                   leading: IconButton(
-                  icon: const Icon(Icons.bookmark_added_rounded,
-                  color: Colors.black
+                  icon: const Icon(
+                    Icons.question_answer,
+                  color: Colors.black54
                   ),
                   onPressed: () {
                     showDialog(
@@ -69,14 +70,21 @@ class Details2 extends StatelessWidget {
                 title: Text(
                   PName,
                   style: const TextStyle(
+                    color: Colors.black54,
                       fontWeight: FontWeight.bold, 
-                      fontSize: 18.0
+                      fontSize: 20.0
                   ),
                 ),
-                subtitle: Text(PDescription),
+                subtitle: Text(
+                  PDescription,
+                  style: const TextStyle(
+                      color: Colors.black54,
+                      fontSize: 18.0
+                  ),
+                  ),
                 trailing: const Icon(
                   Icons.delete,
-                  color: Colors.black,
+                  color: Colors.black54,
                 ),
               ),
            ],

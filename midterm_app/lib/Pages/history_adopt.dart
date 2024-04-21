@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 class history extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return Consumer<OrderRequestModel>(
       builder : (context,orderRequestmodel,child){
       return Scaffold(
@@ -26,9 +25,7 @@ class history extends StatelessWidget {
 }
 class OrderItem extends StatelessWidget {
   final Map<String, dynamic> order;
-
   OrderItem({required this.order});
-
   @override
   Widget build(BuildContext context) {
     return Card(
