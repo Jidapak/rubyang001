@@ -31,12 +31,16 @@ dependencies:
     sdk: flutter
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
+  
   cupertino_icons: ^1.0.1
   google_fonts: any
   form_field_validator: ^1.1.0
   csc_picker: ^0.2.7
   provider: ^6.0.5
-  flutter_launcher_icons: ^0.13.1
+  flutter_launcher_icons:
+    git:
+      url: https://github.com/fluttercommunity/flutter_launcher_icons.git
+      ref: 26fedcee4b0e6f7a85f65f1fb48834a21f57e970
   timeline_tile: ^2.0.0
   image: 4.0.17
   qr_flutter: ^4.1.0
@@ -53,6 +57,9 @@ dependencies:
   im_stepper: ^1.0.1+1
   date_time_picker_widget: ^2.0.0
   ntp: ^2.0.0
+  uuid: ^4.4.0
+  pdf: ^3.10.8
+  printing: ^5.12.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -91,6 +98,7 @@ flutter:
      - images/order_icon.jpg
      - images/image0_0.jpg
      - images/yangpara.png
+     - images/kanyang.png
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -117,20 +125,21 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+  
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "icons/rub.png"
+  image_path: "images/yangpara.png"
   min_sdk_android: 21 # android min sdk min:16, default 21
   web:
     generate: true
-    image_path: "icons/rub.png"
+    image_path: "images/yangpara.png"
     background_color: "#hexcode"
     theme_color: "#hexcode"
   windows:
     generate: true
-    image_path: "icons/rub.png"
+    image_path: "images/yangpara.png"
     icon_size: 48 # min:48, max:256, default: 48
   macos:
     generate: true
-    image_path: "icons/rub.png"
+    image_path: "images/yangpara.png"

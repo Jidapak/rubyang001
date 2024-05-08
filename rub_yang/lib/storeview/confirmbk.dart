@@ -1,119 +1,120 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:rub_yang/Pages/timeslot.dart';
-import 'package:rub_yang/model/storemodel.dart';
-import 'package:rub_yang/storeview/formrubyang.dart';
+// import 'package:flutter/material.dart';
+// import 'package:provider/provider.dart';
+// import 'package:rub_yang/Pages/timeslot.dart';
+// import 'package:rub_yang/model/storemodel.dart';
+// import 'package:rub_yang/storeview/formrubyang.dart';
 
-class ConfirmBK extends StatelessWidget {
-  final String storeName;
-  final num dailyPrice;
-  const ConfirmBK({
-    Key? key,
-    required this.storeName,
-    required this.dailyPrice,
-  }) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('ยืนยันการสั่งซื้อ'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Consumer<SelectedDateTimeProvider>(
-          builder: (context, selectedDateTimeProvider, _) {
-            final selectedDate = selectedDateTimeProvider.selectedDate;
-            final selectedTime = selectedDateTimeProvider.selectedTime;
-            return Consumer<StoresProvider>(
-              builder: (context, storeProvider, _) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: selectedTime.length,
-                        itemBuilder: (context, index) {
-                          return Column(
-                            children: [
-                              ListTile(
-                                contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 16.0, vertical: 8.0),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15.0),
-                                  side: BorderSide(
-                                      color: Colors.brown[800]!, width: 4.0),
-                                ),
-                                title: Text(
-                                  'วันที่เลือก:${selectedDate.day}/${selectedDate.month}/${selectedDate.year}',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.brown[800],
-                                  ),
-                                ),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'เวลาที่เลือก:${selectedTime[index]}',
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        color: Colors.brown[800],
-                                      ),
-                                    ),
-                                    SizedBox(height: 5),
-                                    Text(
-                                      'ร้านรับซื้อที่เลือก : $storeName',
-                                      style: TextStyle(
-                                        color: Colors.brown[800],
-                                        fontSize: 18,
-                                      ),
-                                    ),
-                                    Text(
-                                      'ราคา: $dailyPrice',
-                                      style: TextStyle(
-                                          color: Colors.brown[800],
-                                          fontSize: 18),
-                                    ),
-                                  ],
-                                ),
-                                trailing:   ElevatedButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => Formrubyang(
-                                        dailyPrice: dailyPrice,
-                                      ),
-                                    ),
-                                  );
-                                },
-                                child: Text('ยืนยัน',
-                                 style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                      color: Colors.green[600],
-                                      fontSize: 14),
-                                ),
-                              ),
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    ...selectedDateTimeProvider.bookings
-                        .map((booking) {})
-                        .toList(),
-                  ],
-                );
-              },
-            );
-          },
-        ),
-      ),
-    );
-  }
-}
+// class ConfirmBK extends StatelessWidget {
+//   final String selectedStoreName;
+//   final num priceSheets; // Declare priceSheets as a single number
+
+//   ConfirmBK({required this.priceSheets, required this.selectedStoreName});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Consumer<SelectedDateTimeProvider>(
+//       builder: (context, selectedDateTimeProvider, _) {
+//         final selectedStoreName = selectedDateTimeProvider.selectedStoreName;
+//         final priceSheets = selectedDateTimeProvider.priceSheets;
+
+//         return Scaffold(
+//           appBar: AppBar(
+//             title: Text('ยืนยันการสั่งซื้อ'),
+//           ),
+//           body: Padding(
+//             padding: const EdgeInsets.all(20.0),
+//             child: Consumer2<SelectedDateTimeProvider, StoresProvider>(
+//               builder: (context, selectedDateTimeProvider, storeProvider, _) {
+//                 final selectedDate = selectedDateTimeProvider.selectedDate;
+//                 final selectedTime = selectedDateTimeProvider.selectedTime;
+//                 return Column(
+//                   crossAxisAlignment: CrossAxisAlignment.start,
+//                   children: [
+//                     Expanded(
+//                       child: ListView.builder(
+//                         itemCount: selectedTime.length,
+//                         itemBuilder: (context, index) {
+//                           return Column(
+//                             children: [
+//                               ListTile(
+//                                 contentPadding: EdgeInsets.symmetric(
+//                                     horizontal: 16.0, vertical: 8.0),
+//                                 shape: RoundedRectangleBorder(
+//                                   borderRadius: BorderRadius.circular(15.0),
+//                                   side: BorderSide(
+//                                       color: Colors.brown[800]!, width: 4.0),
+//                                 ),
+//                                 title: Text(
+//                                   'วันที่เลือก:${selectedDate.day}/${selectedDate.month}/${selectedDate.year}',
+//                                   style: TextStyle(
+//                                     fontSize: 18,
+//                                     color: Colors.brown[800],
+//                                   ),
+//                                 ),
+//                                 subtitle: Column(
+//                                   crossAxisAlignment: CrossAxisAlignment.start,
+//                                   children: [
+//                                     Text(
+//                                       'เวลาที่เลือก:${selectedTime[index]}',
+//                                       style: TextStyle(
+//                                         fontSize: 18,
+//                                         color: Colors.brown[800],
+//                                       ),
+//                                     ),
+//                                     SizedBox(height: 5),
+//                                     Text(
+//                                       'ร้านรับซื้อที่เลือก : $selectedStoreName',
+//                                       style: TextStyle(
+//                                         color: Colors.brown[800],
+//                                         fontSize: 18,
+//                                       ),
+//                                     ),
+//                                     Text(
+//                                       'ราคา: $priceSheets บาท',
+//                                       style: TextStyle(
+//                                           color: Colors.brown[800], fontSize: 18),
+//                                     ),
+//                                   ],
+//                                 ),
+//                                 trailing: ElevatedButton(
+//                                   onPressed: () {
+//                                     // Navigator.push(
+//                                     //   context,
+//                                     //   MaterialPageRoute(
+//                                     //     builder: (context) => Formrubyang(
+//                                     //       priceSheets: priceSheets,
+//                                     //       selectedStoreName: selectedStoreName,
+//                                     //     ),
+//                                     //   ),
+//                                     // );
+//                                   },
+//                                   child: Text(
+//                                     'ยืนยัน',
+//                                     style: TextStyle(
+//                                         fontWeight: FontWeight.bold,
+//                                         color: Colors.green[600],
+//                                         fontSize: 14),
+//                                   ),
+//                                 ),
+//                               ),
+//                             ],
+//                           );
+//                         },
+//                       ),
+//                     ),
+//                     SizedBox(height: 20),
+//                     ...selectedDateTimeProvider.bookings.map((booking) {}).toList(),
+//                   ],
+//                 );
+//               },
+//             ),
+//           ),
+//         );
+//       },
+//     );
+//   }
+// }
+
 
 // class Bookingorder extends StatelessWidget {
 //   final Map<String, dynamic> booking;

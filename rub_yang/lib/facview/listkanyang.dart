@@ -21,57 +21,125 @@ class _ListKanYangState extends State<ListKanyang> {
               child: CircularProgressIndicator(),
             );
           }
-          return ListView(
-            children: snapshot.data!.docs.map((kanyangDocument) {
-              return GestureDetector(
-                onTap: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => NameStore()),
-                  // );
-                },
-                child: Container(
-                  margin: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.brown,
-                      width: 3,
-                    ),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
+          return SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: snapshot.data!.docs.map<Widget>((kanyangDocument) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                       Text(
-                        " ${kanyangDocument["Name"]}",
-                        style: TextStyle(
-                          color: Colors.brown[800],
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold
+                      Card(
+                        elevation: 3,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: Colors
+                                          .grey[300]!, // Adjust divider color
+                                      width: 1.0, // Adjust divider thickness
+                                    ),
+                                  ),
+                                ),
+                                child: Text(
+                                  "ชื่อร้าน: ${kanyangDocument["Name"]}",
+                                  style: TextStyle(fontWeight: FontWeight.bold,
+                                  fontSize: 18
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              Container(
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: Colors
+                                          .grey[300]!, // Adjust divider color
+                                      width: 1.0, // Adjust divider thickness
+                                    ),
+                                  ),
+                                ),
+                                child: Text("ถนน: ${kanyangDocument["Road"]}"),
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: Colors
+                                          .grey[300]!, // Adjust divider color
+                                      width: 1.0, // Adjust divider thickness
+                                    ),
+                                  ),
+                                ),
+                                child: Text(
+                                    "ตำบล: ${kanyangDocument["Subdistrict"]}"),
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: Colors
+                                          .grey[300]!, // Adjust divider color
+                                      width: 1.0, // Adjust divider thickness
+                                    ),
+                                  ),
+                                ),
+                                child: Text(
+                                    "เบอร์ติดต่อ: ${kanyangDocument["TelNum"]}"),
+                              ),
+                              SizedBox(height: 10),
+                              Container(
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: Colors
+                                          .grey[300]!, // Adjust divider color
+                                      width: 1.0, // Adjust divider thickness
+                                    ),
+                                  ),
+                                ),
+                                child: Text(
+                                    "แคมเปญ: ${kanyangDocument["campian"]}"
+                                    ),
+                              ),
+                              SizedBox(height: 10),
+                              Container(
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: Colors
+                                          .grey[300]!, // Adjust divider color
+                                      width: 1.0, // Adjust divider thickness
+                                    ),
+                                  ),
+                                ),
+                                child: Text(
+                                  "ข่าวสาร: ${kanyangDocument["News"]}",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize:
+                                        14, 
+                                    color: Colors.black87, 
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                      ),
-                      
-                      Text(
-                        "ถนน: ${kanyangDocument["Road"]}",
-                        style: TextStyle(color: Colors.black),
-                      ),
-                      Text(
-                        "ตำบล: ${kanyangDocument["Subdistrict"]}",
-                        style: TextStyle(color: Colors.black),
-                      ),
-                      Text(
-                        "เบอร์ติดต่อ: ${kanyangDocument["TelNum"]}",
-                        style: TextStyle(color: Colors.black),
+                        ),
                       ),
                     ],
                   ),
-                ),
-              );
-            }).toList(),
+                );
+              }).toList(),
+            ),
           );
         },
       ),
     );
   }
 }
-

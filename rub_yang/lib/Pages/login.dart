@@ -15,6 +15,8 @@ class _LoginPageState extends State<LoginPage> {
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+   String user='';
+   String password='';
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -48,7 +50,8 @@ class _LoginPageState extends State<LoginPage> {
                             height: 260,
                           ),
                         ),
-                        Text("อีเมล์",
+                        Text(
+                          "อีเมล์",
                         style :TextStyle(
                         color: const Color.fromARGB(255, 94, 45, 27),
                         fontSize: 18,
@@ -56,6 +59,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         ),
                         TextFormField(
+                          onChanged:(value) => user =value.trim(),
                           validator: MultiValidator([
                             RequiredValidator(
                                 errorText: "กรุณาป้อนอีเมล์ด้วยค่ะ"),
@@ -82,6 +86,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         ),
                         TextFormField(
+                          onChanged: (value) => password =value.trim(),
                           validator: RequiredValidator(
                               errorText: "กรุณาป้อนรหัสผ่านด้วยค่ะ"),
                           controller: _passwordController,

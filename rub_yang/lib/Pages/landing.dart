@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:rub_yang/Pages/login.dart';
 
 class LandingPage extends StatefulWidget {
-  LandingPage({Key? key}) : super(key: key);
+  //  final String userEmail;
+  // LandingPage({Key? key, required this.userEmail}) : super(key: key);
   @override
   _LandingPageState createState() => _LandingPageState();
 }

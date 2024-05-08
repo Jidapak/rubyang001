@@ -1,12 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class Farmer_Infor extends StatelessWidget {
+class Farmer_Infor extends StatefulWidget {
+  @override
+  _Farmer_InforState createState() => _Farmer_InforState();
+}
+
+class _Farmer_InforState extends State<Farmer_Infor> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'ชาวสวนที่มีต้นไม้อายุเกิน 25 ปี',
+          'ชาวสวนที่จะเข้าร่วมขอทุนกยท',
           style: TextStyle(
             fontSize: 18.0,
             letterSpacing: 1.5,
@@ -15,205 +21,87 @@ class Farmer_Infor extends StatelessWidget {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Card(
-          elevation: 5,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: DataTable(
-              headingTextStyle: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-                color: Colors.brown,
-              ),
-              dataRowHeight: 60,
-              columnSpacing: 40,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.brown, 
-                  width: 1.0,
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance.collection("farmerdata").snapshots(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return ListView(
+            padding: EdgeInsets.symmetric(vertical: 16.0),
+            children: snapshot.data!.docs.map((document) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 8.0,
                 ),
-              ),
-              columns: <DataColumn>[
-                DataColumn(
-                  label: Center(
-                    child: Text(
-                      'เลขสมาชิก',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.brown,
-                      ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.brown[800],
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: ListTile(
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildText(
+                          "ชื่อชาวสวน: ${document["namefarmer"]} ${document["lastnfarmer"]}",
+                          16.0,
+                        ),
+                        _buildText(
+                          "สัญชาติ: ${document["nationality"]}",
+                          16.0,
+                        ),
+                        _buildText(
+                          "ที่อยู่: ${document["location"]} ${document["selectedCity"]}",
+                          16.0,
+                        ),
+                        _buildText(
+                          "จังหวัด: ${document["selectedState"]} ${document["selectedCountry"]}",
+                          16.0,
+                        ),
+                        _buildText(
+                          "ขนาดฟาร์ม: ${document["areafarm"]} ไร่",
+                          16.0,
+                        ),
+                        _buildText(
+                          "จำนวนต้นยาง: ${document["quantitytree"]} ต้น",
+                          16.0,
+                        ),
+                        _buildText(
+                          "จำนวนต้นยางอายุ > 25 ปี: ${document["agetree"]}ต้น",
+                          16.0,
+                        ),
+                        _buildText(
+                          "เป็นเจ้าของสวน ?: ${document["_radioValue12"]} ",
+                          16.0,
+                        ),
+                        _buildText(
+                          "เข้าร่วมโครงการกยท ?: ${document["_radioValue11"]} ",
+                          16.0,
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                DataColumn(
-                  label: Center(
-                    child: Text(
-                      'ผ่านเกณฑ์',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.brown,
-                      ),
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Center(
-                    child: Text(
-                      'รายละเอียด',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.brown,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-              rows: const <DataRow>[
-                DataRow(
-                  cells: <DataCell>[
-                    DataCell(
-                      Center(
-                        child: Text(
-                          '10011',
-                          style: TextStyle(color: Colors.brown),
-                        ),
-                      ),
-                    ),
-                    DataCell(
-                      Center(
-                        child: Text(
-                          'ผ่าน',
-                          style: TextStyle(color: Colors.brown),
-                        ),
-                      ),
-                    ),
-                    DataCell(
-                      Center(
-                        child: Text(
-                          'สนใจเข้าร่วม',
-                          style: TextStyle(color: Colors.brown),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                DataRow(
-                  cells: <DataCell>[
-                    DataCell(
-                      Center(
-                        child: Text(
-                          '10012',
-                          style: TextStyle(color: Colors.brown),
-                        ),
-                      ),
-                    ),
-                    DataCell(
-                      Center(
-                        child: Text(
-                          'ผ่าน',
-                          style: TextStyle(color: Colors.brown),
-                        ),
-                      ),
-                    ),
-                    DataCell(
-                      Center(
-                        child: Text(
-                          'ไม่ส่วนใจ\nเข้าร่วม',
-                          style: TextStyle(color: Colors.brown),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                DataRow(
-                  cells: <DataCell>[
-                    DataCell(
-                      Center(
-                        child: Text(
-                          '10013',
-                          style: TextStyle(color: Colors.brown),
-                        ),
-                      ),
-                    ),
-                    DataCell(
-                      Center(
-                        child: Text(
-                          'ไม่ผ่าน',
-                          style: TextStyle(color: Colors.brown),
-                        ),
-                      ),
-                    ),
-                    DataCell(
-                      Center(
-                        child: Text(
-                          'ข้อ 1 และ\n2 ไม่ผ่าน',
-                          style: TextStyle(color: Colors.brown),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                DataRow(
-                  cells: <DataCell>[
-                    DataCell(
-                      Center(
-                        child: Text(
-                          '10014',
-                          style: TextStyle(color: Colors.brown),
-                        ),
-                      ),
-                    ),
-                    DataCell(
-                      Center(
-                        child: Text(
-                          'ผ่าน',
-                          style: TextStyle(color: Colors.brown),
-                        ),
-                      ),
-                    ),
-                    DataCell(
-                      Center(
-                        child: Text(
-                          'ไม่ส่วนใจ\nเข้าร่วม',
-                          style: TextStyle(color: Colors.brown),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                DataRow(
-                  cells: <DataCell>[
-                    DataCell(
-                      Center(
-                        child: Text(
-                          '10015',
-                          style: TextStyle(color: Colors.brown),
-                        ),
-                      ),
-                    ),
-                    DataCell(
-                      Center(
-                        child: Text(
-                          'ไม่ผ่าน',
-                          style: TextStyle(color: Colors.brown),
-                        ),
-                      ),
-                    ),
-                    DataCell(
-                      Center(
-                        child: Text(
-                          'ข้อ 1 และ\n2 ไม่ผ่าน',
-                          style: TextStyle(color: Colors.brown),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
+              );
+            }).toList(),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildText(String text, double fontSize) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Text(
+        text,
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: fontSize,
         ),
       ),
     );

@@ -2,13 +2,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:rub_yang/Pages/paymentselected.dart';
 import 'package:rub_yang/model/storemodel.dart';
 import 'package:rub_yang/storeview/timestep.dart';
 
 class Formrubyang extends StatefulWidget {
-  final num dailyPrice;
+  final String selectedStoreName;
+  final List<num> priceSheets;
+  // final DateTime selectedDate;
+  // final String selectedTime;
 
-  Formrubyang({required this.dailyPrice});
+  Formrubyang({
+    required this.selectedStoreName,
+    required this.priceSheets,
+    // required this.selectedDate,
+    // required this.selectedTime,
+  });
 
   @override
   _FormrubyangState createState() => _FormrubyangState();
@@ -53,18 +62,18 @@ class _FormrubyangState extends State<Formrubyang> {
                     width: 6.0,
                   ),
                 ),
-              child: Center(
-                child: Text(
-                  'ราคา: ${widget.dailyPrice}',
-                  style: TextStyle(
-                    color: Colors.brown[800],
-                     fontSize: 18,
-                     fontWeight: FontWeight.bold,
-                     ),
+                child: Center(
+                  child: Text(
+                    'ราคา: ${widget.priceSheets[0]}', //ส่งมาจากหน้า ordercus(provider)
+                    style: TextStyle(
+                      color: Colors.brown[800],
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
-              ),
-                SizedBox(height: 20),
+              SizedBox(height: 20),
               TextFormField(
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
@@ -130,10 +139,10 @@ class _FormrubyangState extends State<Formrubyang> {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     setState(() {
-                      totalPrice = widget.dailyPrice *
+                      totalPrice = widget.priceSheets[0] *
                           weightofcup *
                           weightoftotal *
-                          (DRCperc );
+                          DRCperc/100;
                     });
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
@@ -146,9 +155,8 @@ class _FormrubyangState extends State<Formrubyang> {
                 style: ButtonStyle(
                   padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                     EdgeInsets.symmetric(
-                        horizontal: 20.0,
-                        
-                        ),
+                      horizontal: 20.0,
+                    ),
                   ),
                 ),
               ),
@@ -159,7 +167,8 @@ class _FormrubyangState extends State<Formrubyang> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => TimelinePayment(),
+                          // builder: (context) => TimelinePayment(),
+                          builder: (context) => PaymentSelectionPage()
                         ));
                   },
                   child: Card(

@@ -15,7 +15,7 @@ class HomePageR extends StatelessWidget {
   },
    3: {
     "icon": Icons.list_alt_outlined,
-    "text": '  ข้อมูลสวน \n   ของคุณ  ',
+    "text": '  กรอกขอทุน \n   ปลุกใหม่  ',
   },
   //   4: {
   //   "icon": Icons.stairs,
@@ -24,6 +24,10 @@ class HomePageR extends StatelessWidget {
   4: {
     "icon": Icons.sell,
     "text": '   ราคา \n แต่ละร้าน',
+  },
+      5: {
+    "icon": Icons.newspaper,
+    "text": ' ข่าวสาร\nการยาง',
   },
 }!;
  Widget build(BuildContext context) {
@@ -52,16 +56,16 @@ class HomePageR extends StatelessWidget {
                     ),
                   ],
                 ),
-                IconButton(
-                  onPressed: () {
-                  Navigator.pushNamed(context, '/notipay');
-                  },
-                  icon: Icon(
-                    Icons.add_alert,
-                    color: Colors.black,
-                    size: 25,
-                  ),
-                ),
+                // IconButton(
+                //   onPressed: () {
+                //   Navigator.pushNamed(context, '/notipay');
+                //   },
+                //   icon: Icon(
+                //     Icons.add_alert,
+                //     color: Colors.black,
+                //     size: 25,
+                //   ),
+                // ),
               ],
             ),
           ),

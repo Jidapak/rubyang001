@@ -1,12 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-class FarmerEvent extends StatelessWidget {
+class Factory_Infor extends StatefulWidget {
+  @override
+  _Factory_InforState createState() => _Factory_InforState();
+}
+
+class _Factory_InforState extends State<Factory_Infor> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'รายการชาวสวนเข้าร่วมโครงการปลูกใหม่แทนเก่า',
+          'รายการร้านรับยางส่งโรงงาน',
           style: TextStyle(
             fontSize: 20.0,
             letterSpacing: 2.0,
@@ -23,37 +30,80 @@ class FarmerEvent extends StatelessWidget {
           },
         ),
       ),
-      backgroundColor: Colors.brown,
-      body: ListView(
-        padding: EdgeInsets.all(20),
-        children: [
-          Card(
-            elevation: 3,
-            margin: EdgeInsets.symmetric(vertical: 10),
-            child: ListTile(
-              title: Text(
-                'เลขที่ส่งโรงงาน :121 \n ร้านเล็ก ตาขุน(20010)',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.brown,
+      body: StreamBuilder(
+        stream:
+            FirebaseFirestore.instance.collection("factorydata").snapshots(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return ListView(
+            children: snapshot.data!.docs.map((document) {
+              DateTime dateTime = DateTime.now();
+              String formattedDate = DateFormat('dd/MM/yyyy').format(dateTime);
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0, vertical: 16.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.brown[800],
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: ListTile(
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildInfoRow("ร้านรับซื้อ", document["namerubyang"]),
+                        _buildInfoRow("โรงงาน", document["namefactory"]),
+                        _buildInfoRow("คุณภาพยางพารา",
+                            "${document["quanlityyang"]} เปอร์เซนต์"),
+                        _buildInfoRow("จำนวนรวม",
+                            "${document["totalquantity"]} กิโลกรัม"),
+                        _buildInfoRow("ยอดเงินที่ได้รับ",
+                            "${document["totalpay"]} บาท"),
+                        _buildInfoRow("รูปแบบยางพารา",
+                            document["_radioValue12"] ?? "ไม่ระบุ"),
+                        _buildInfoRow("รอบวันที่", formattedDate),
+                      ],
+                    ),
+                  ),
                 ),
+              );
+            }).toList(),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            flex: 3,
+            child: Text(
+              '$label:',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
               ),
-              subtitle: Text('ส่งโรงงานศรีตรัง \n ยอดรวม 100,000บ. \n น้ำหนัก 2ตัน \n ยางพาราชนิดน้ำ'),
             ),
           ),
-          SizedBox(height: 20),
-          Card(
-            elevation: 3,
-            margin: EdgeInsets.symmetric(vertical: 10),
-            child: ListTile(
-              title: Text(
-                'เลขที่ส่งโรงงาน :122 \n ร้านโกโหน่ง เวียงสระ(20020)',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.brown,
-                ),
+          SizedBox(width: 8.0),
+          Expanded(
+            flex: 7,
+            child: Text(
+              value,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
               ),
-               subtitle: Text('ส่งโรงงานรับเบอร์ \n ยอดรวม 200,000บ. \n น้ำหนัก 5ตัน \n ยางพาราชนิดก้อน'),
             ),
           ),
         ],
@@ -61,3 +111,134 @@ class FarmerEvent extends StatelessWidget {
     );
   }
 }
+
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:flutter/material.dart';
+// import 'package:intl/intl.dart';
+
+// class Factory_Infor extends StatefulWidget {
+//   @override
+//   _Factory_InforState createState() => _Factory_InforState();
+// }
+
+// class _Factory_InforState extends State<Factory_Infor> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text(
+//           'รายการร้านรับยางส่งโรงงาน',
+//           style: TextStyle(
+//             fontSize: 20.0,
+//             letterSpacing: 2.0,
+//             color: Colors.brown,
+//             fontWeight: FontWeight.bold,
+//           ),
+//         ),
+//         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+//         elevation: 0,
+//         leading: IconButton(
+//           icon: Icon(Icons.arrow_back),
+//           onPressed: () {
+//             Navigator.of(context).pop();
+//           },
+//         ),
+//       ),
+//       body: StreamBuilder(
+//         stream:
+//             FirebaseFirestore.instance.collection("factorydata").snapshots(),
+//         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+//           if (!snapshot.hasData) {
+//             return Center(
+//               child: CircularProgressIndicator(),
+//             );
+//           }
+//           return ListView(
+//             children: snapshot.data!.docs.map((document) {
+//               DateTime dateTime = DateTime.now();
+//               String formattedDate = DateFormat('dd/MM/yyyy').format(dateTime);
+//               return Padding(
+//                 padding: const EdgeInsets.symmetric(
+//                     horizontal: 16.0, vertical: 16.0),
+//                 child: Container(
+//                   decoration: BoxDecoration(
+//                     color: Colors.brown[800],
+//                     borderRadius: BorderRadius.circular(10),
+//                   ),
+//                   child: ListTile(
+//                     title: Center(
+//                       child: Column(
+//                         crossAxisAlignment: CrossAxisAlignment.start,
+//                         children: [
+//                           Center(
+//                             child: Text(
+//                               "ร้านรับซื้อ${document["namerubyang"]}ส่งโรงงาน",
+//                               style: TextStyle(
+//                                 color: Colors.white,
+//                                 fontSize: 18,
+//                                 fontWeight: FontWeight.bold,
+//                               ),
+//                             ),
+//                           ),
+//                           Text(
+//                             "ชื่อร้านรับซื้อ : ${document["namerubyang"]}",
+//                             style: TextStyle(
+//                               color: Colors.white,
+//                               fontSize: 16,
+//                             ),
+//                           ),
+//                           Text(
+//                             "ชื่อโรงงาน : ${document["namefactory"]}",
+//                             style: TextStyle(
+//                               color: Colors.white,
+//                               fontSize: 16,
+//                             ),
+//                           ),
+//                           Text(
+//                             "คุณภาพยางพารา: ${document["quanlityyang"]} เปอร์เซนต์",  
+//                             style: TextStyle(
+//                               color: Colors.white,
+//                               fontSize: 16,
+//                             ),
+//                           ),
+//                           Text(
+//                           " จำนวนรวม ${document["totalquantity"]} กิโลกรัม", 
+//                             style: TextStyle(
+//                               color: Colors.white,
+//                               fontSize: 16,
+//                             ),
+//                           ),
+//                           Text(
+//                             "ยอดเงินที่ได้รับ: ${document["totalpay"]} บาท",
+//                             style: TextStyle(
+//                               color: Colors.white,
+//                               fontSize: 16,
+//                             ),
+//                           ),
+//                           Text(
+//                             "รูปแบบยางพารา: ${document["_radioValue12"]}",
+//                             style: TextStyle(
+//                               color: Colors.white,
+//                               fontSize: 16,
+//                             ),
+//                           ),
+//                           Text(
+//                             "รอบวันที่: $formattedDate",
+//                             style: TextStyle(
+//                               color: Colors.white,
+//                               fontSize: 16,
+//                             ),
+//                           )
+//                         ],
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//               );
+//             }).toList(),
+//           );
+//         },
+//       ),
+//     );
+//   }
+// }

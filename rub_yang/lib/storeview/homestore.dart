@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:rub_yang/Pages/listorderreq.dart';
+import 'package:rub_yang/Pages/showprofile.dart';
 import 'package:rub_yang/storeview/confirmbk.dart';
 import 'package:rub_yang/storeview/insertprice.dart';
+import 'package:rub_yang/storeview/ordercusto.dart';
 import 'package:rub_yang/storeview/storedetail_Form.dart';
-class HomeStore extends StatelessWidget {
-  final List<String> entries = ['A', 'B', 'C', 'D'];
-final String storeName;
-  final num dailyPrice;
-   HomeStore({
-    Key? key,
-    required this.storeName,
-    required this.dailyPrice,
-  }) : super(key: key);
 
+class HomeStore extends StatelessWidget {
+  final String selectedStoreName;
+  final num priceSheets; // Declare priceSheets as a list
+  HomeStore({required this.priceSheets, required this.selectedStoreName});
+  final List<String> entries = ['A', 'B', 'C', 'D','E'];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,12 +32,13 @@ final String storeName;
           crossAxisCount: 2,
           crossAxisSpacing: 16.0,
           mainAxisSpacing: 16.0,
-          children: List.generate(4, (index) {
+          children: List.generate(5, (index) {
             List<String> textList = [
-              'รายการแจ้งเตือน \n จากลูกค้า',
-              'รายการโอนเงิน\n ให้ชาวสวน',
+              'รายการออเดอร์ \n จากชาวสวน',
+              'สถานะการซื้อขายยาง',
               'อัพเดทราคารายวัน',
-              'อัพเดทรายละเอียดร้าน'
+              'อัพเดทรายละเอียดร้าน',
+              'รายละเอียดชาวสวน',
             ];
             return GestureDetector(
               onTap: () {
@@ -47,30 +47,47 @@ final String storeName;
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ConfirmBK(
-                           storeName: storeName,
-                           dailyPrice: dailyPrice,
+                        builder: (context) => OrderCust(
+                          //  priceSheets: selectedPrice,
                         ),
                       ),
                     );
                     break;
                   case 1:
-                    break;
-                   case 2: Navigator.push(
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ListOrderReq(
+                          //  priceSheets: selectedPrice,
+                        ),
+                      ),
+                    );
+                     break;
+                  case 2:
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => InsertPrice(),
                       ),
-                   );
+                    );
                     break;
-                    case 3: Navigator.push(
+                  case 3:
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => Form_Store(),
                       ),
-                   );
+                    );
+                    case 4:
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => showprofile(),
+                      ),
+                    );
                   default:
                     break;
+                    
                 }
               },
               child: Container(

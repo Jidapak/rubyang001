@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:rub_yang/Pages/aboutpdf/%E0%B9%89listreport.dart';
+import 'package:rub_yang/Pages/aboutpdf/homereport.dart';
 import 'package:rub_yang/Pages/confirmorder.dart';
 import 'package:rub_yang/Pages/farmerInfor.dart';
 import 'package:rub_yang/Pages/farmerevent.dart';
-import 'package:rub_yang/facview/fachistory.dart';
 import 'package:rub_yang/facview/formtofactory.dart';
-import 'package:rub_yang/facview/listfactory.dart';
+import 'package:rub_yang/facview/kanyangform.dart';
+// import 'package:rub_yang/facview/listfactory.dart';
 import 'package:rub_yang/facview/listkanyang.dart';
-import 'package:rub_yang/facview/statusfactory.dart';
+import 'package:rub_yang/storeview/confirmbk.dart';
 import 'package:rub_yang/storeview/homestore.dart';
 import 'package:rub_yang/storeview/insertvalue.dart';
+import 'package:rub_yang/storeview/ordercusto.dart';
 
 class ListItem {
   final String title;
@@ -16,6 +19,9 @@ class ListItem {
   ListItem({required this.title, required this.details2});
 }
 class ListTab extends StatelessWidget {
+   final String selectedStoreName;
+  final num priceSheets; // Declare priceSheets as a list
+  ListTab({required this.priceSheets, required this.selectedStoreName});
   final List<ListItem> entries = [
     ListItem(
       title: 'ร้านรับยาง(ออเดอร์ชาวสวน)',
@@ -37,23 +43,27 @@ class ListTab extends StatelessWidget {
       title: 'คุณภาพยางพาราชาวสวน',
       details2: 'เช็คคุณภาพควรเข้าร่วมการอบรมพัฒนาคุณภาพ?',
     ),
+     ListItem(
+      title: 'รายงานที่สามารถดึงpdf',
+      details2: 'รายงานpdf',
+    ),
+    //    ListItem(
+    //   title: 'รายการออเดอร์ลูกค้า',
+    //   details2: 'รายการออเดอร์ลูกค้า',
+    // ),
   ];
  final List<ListItem> entries2 = [
     ListItem(
-      title: 'รายการต้นไม้เกิน25ปี',
-      details2: 'รายการต้นไม้เกิน25ปีของชาวสวนแต่ละรายและแต่ละแปลง(เพื่อยื่นขอทุนปลูกใหม่) \n ราคาขายไม้ตามตลาดกลาง',
-    ),
-    ListItem(
-      title: 'รายชื่อชาวสวนที่จะเข้าร่วมอบรม',
-      details2: 'รายชื่อชาวสวนที่จะเข้าร่วมอบรมเพื่อพัฒนาคุณภาพยางพาราตามการยางสนับสนุน',
+      title: 'รายงานข้อมูลชาวสวนสำหรับส่งกยท',
+      details2: 'รายงานข้อมูลชาวสวนสำหรับส่งกยท',
     ),
     ListItem(
       title: 'ประวัติย้อนหลังส่งโรงงาน',
       details2: 'ประวัติย้อนหลังส่งโรงงานแต่ละรอบ',
     ),
-    ListItem(
-      title: 'โรงงานใกล้คุณ',
-      details2: 'โรงงานใกล้คุณ',
+     ListItem(
+      title: 'อัพเดทแคมเปญกยท',
+      details2: 'อัพเดทแคมเปญกยท',
     ),
      ListItem(
       title: 'กยท.ใกล้คุณ',
@@ -62,6 +72,8 @@ class ListTab extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
+    print('priceSheets: $priceSheets');
+    print('selectedStoreName: $selectedStoreName');
     return Scaffold(
       appBar: AppBar(
         title: const 
@@ -111,8 +123,8 @@ class ListTab extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => HomeStore(
-                            storeName: 'ชื่อร้าน',
-                          dailyPrice: 100, 
+                            priceSheets: priceSheets,
+                          selectedStoreName: selectedStoreName,
                           ),
                         ),
                       );
@@ -120,7 +132,7 @@ class ListTab extends StatelessWidget {
                         Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>formfactory(
+                          builder: (context) =>FormFactory(
                           ),
                         ),
                        );
@@ -134,15 +146,27 @@ class ListTab extends StatelessWidget {
                         ),
                        );
                       }
-                      else if (index == 3){
+                      else if (index == 4){
+                        Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ListReport(
+                          ),
+                        ),
+                       );
+                      }
+                      //    else if (index == 5){
                       //   Navigator.push(
                       //   context,
                       //   MaterialPageRoute(
-                      //     builder: (context) => InsertValue(
-                      //     ),
+                      //     builder: (context) =>OrderCust(
+                      //     // priceSheets: [priceSheets],
+                      //     // selectedStoreName: selectedStoreName,
+                      //     //  priceSheets: selectedPrice,
+                      //   ),
                       //   ),
                       //  );
-                      }
+                      // }
                     },
                   ),
                 );
@@ -179,7 +203,7 @@ class ListTab extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>ConfirmO(
+                          builder: (context) =>Farmer_Infor(
                           ),
                         ),
                       );
@@ -188,34 +212,33 @@ class ListTab extends StatelessWidget {
                         Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>Farmer_Infor(
+                          builder: (context) =>Factory_Infor(
                           ),
                         ),
                        );
                       }
-                        else if (index == 2){
-                        Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>FarmerEvent(
-                          ),
-                        ),
-                       );
-                      }
+                      //   else if (index == 3){
+                      //   Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) =>ListFactory(
+                      //     ),
+                      //   ),
+                      //  );
+                      // }
                        else if (index == 3){
                         Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>ListFactory(
+                          builder: (context) =>ListKanyang(
                           ),
                         ),
                        );
-                      }
-                         else if (index == 4){
+                      }else if (index == 2){
                         Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>ListKanyang(
+                          builder: (context) =>FormKanyang(
                           ),
                         ),
                        );

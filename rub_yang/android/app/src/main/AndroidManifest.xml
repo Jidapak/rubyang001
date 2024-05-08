@@ -3,7 +3,7 @@ package="com.example">
     <application
         android:label="rub_yang"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/launcher_icon"
          android:enableOnBackInvokedCallback="true"
          android:usesCleartextTraffic="true">
         <activity
