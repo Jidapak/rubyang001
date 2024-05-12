@@ -124,7 +124,6 @@ class MyApp extends StatelessWidget {
         //                   dailyPrice: 50,
         //                 ),
         // '/5':(context) => StatusOrder(),
-        '/notipay': (context) => NotiPay(),
         '/fachistory': (context) => FacHistory(),
         '/farmerevent': (context) => Factory_Infor(),
         '/statusFac': (context) => StatusFac(),

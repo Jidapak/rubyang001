@@ -2,6 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class PaymentSelectionPage extends StatefulWidget {
+  final String orderId;
+  PaymentSelectionPage({required this.orderId});
+
   @override
   _PaymentSelectionPageState createState() => _PaymentSelectionPageState();
 }
@@ -20,12 +23,22 @@ class _PaymentSelectionPageState extends State<PaymentSelectionPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                child: Text(
+                  'เลขที่คำสั่งขาย: ${widget.orderId}',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
+            ),
+              SizedBox(height: 20),
             Text(
               'โปรดเลือกวิธีการชำระเงิน:',
               style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.brown[800]),
             ),
             SizedBox(height: 20),
             RadioListTile(
@@ -52,7 +65,6 @@ class _PaymentSelectionPageState extends State<PaymentSelectionPage> {
             ElevatedButton(
               onPressed: () {
                 if (_selectedPaymentMethod == null) {
-                  // แสดงข้อความแจ้งเตือนถ้าผู้ใช้ไม่ได้เลือกวิธีการชำระเงิน
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
@@ -137,8 +149,9 @@ class _TransferPaymentPageState extends State<TransferPaymentPage> {
       appBar: AppBar(
         title: Text('เลือกวิธีการชำระเงิน'),
       ),
-        body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection("farmerprofile").snapshots(),
+      body: StreamBuilder(
+        stream:
+            FirebaseFirestore.instance.collection("farmerprofile").snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
             return Center(
@@ -177,6 +190,7 @@ class _TransferPaymentPageState extends State<TransferPaymentPage> {
             ),
           );
         },
+        
       ),
     );
   }

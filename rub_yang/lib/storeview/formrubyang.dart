@@ -8,15 +8,15 @@ import 'package:rub_yang/storeview/timestep.dart';
 
 class Formrubyang extends StatefulWidget {
   final String selectedStoreName;
-  final List<num> priceSheets;
-  // final DateTime selectedDate;
-  // final String selectedTime;
+  final List<dynamic> priceSheets;
+  final String orderId;
+  // final Function(String) navigateToPaymentPage; // Callback function
 
   Formrubyang({
     required this.selectedStoreName,
     required this.priceSheets,
-    // required this.selectedDate,
-    // required this.selectedTime,
+    required this.orderId,
+    // required this.navigateToPaymentPage, // Accept the callback function
   });
 
   @override
@@ -29,7 +29,6 @@ class _FormrubyangState extends State<Formrubyang> {
   double DRCperc = 0;
   double weightoftotal = 0;
   double totalPrice = 0;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,12 +42,22 @@ class _FormrubyangState extends State<Formrubyang> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Center(
+                child: Text(
+                  'คำนวณยอดเงินที่มาส่งขาย',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.brown[800],
+                  ),
+                ),
+              ),
+              SizedBox(height: 15),
               Text(
-                'คำนวณยอดเงินที่มาส่งขาย',
+                'เลขคำสั่งขาย: ${widget.orderId}',
                 style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
                   color: Colors.brown[800],
+                  fontSize: 18,
                 ),
               ),
               SizedBox(height: 20),
@@ -63,13 +72,17 @@ class _FormrubyangState extends State<Formrubyang> {
                   ),
                 ),
                 child: Center(
-                  child: Text(
-                    'ราคา: ${widget.priceSheets[0]}', //ส่งมาจากหน้า ordercus(provider)
-                    style: TextStyle(
-                      color: Colors.brown[800],
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  child: Column(
+                    children: [
+                      Text(
+                        'ราคา: ${widget.priceSheets[0]}',
+                        style: TextStyle(
+                          color: Colors.brown[800],
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -134,28 +147,34 @@ class _FormrubyangState extends State<Formrubyang> {
                 },
               ),
               SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-                    setState(() {
-                      totalPrice = widget.priceSheets[0] *
-                          weightofcup *
-                          weightoftotal *
-                          DRCperc/100;
-                    });
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('ราคารวมที่ต้องจ่าย: $totalPrice'),
+              Center(
+                child: Container(
+                  width: 200, // Set the desired width here
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        _formKey.currentState!.save();
+                        setState(() {
+                          totalPrice = widget.priceSheets[0] *
+                              weightofcup *
+                              weightoftotal *
+                              DRCperc /
+                              100;
+                        });
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('ราคารวมที่ต้องจ่าย: $totalPrice'),
+                          ),
+                        );
+                      }
+                    },
+                    child: Text('คำนวณ'),
+                    style: ButtonStyle(
+                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                        EdgeInsets.symmetric(
+                          horizontal: 60.0,
+                        ),
                       ),
-                    );
-                  }
-                },
-                child: Text('คำนวณ'),
-                style: ButtonStyle(
-                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                    EdgeInsets.symmetric(
-                      horizontal: 20.0,
                     ),
                   ),
                 ),
@@ -165,11 +184,11 @@ class _FormrubyangState extends State<Formrubyang> {
                 GestureDetector(
                   onTap: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          // builder: (context) => TimelinePayment(),
-                          builder: (context) => PaymentSelectionPage()
-                        ));
+                      context,
+                      MaterialPageRoute(
+              builder: (context) => PaymentSelectionPage(orderId: widget.orderId),
+                      ),
+                    );
                   },
                   child: Card(
                     elevation: 5,

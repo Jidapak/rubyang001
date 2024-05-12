@@ -7,7 +7,7 @@ class ListOrderReq extends StatefulWidget {
 }
 
 class _ListOrderReqState extends State<ListOrderReq> with SingleTickerProviderStateMixin {
-  late TabController _tabController;
+ late TabController _tabController;
 
   @override
   void initState() {
@@ -23,115 +23,89 @@ class _ListOrderReqState extends State<ListOrderReq> with SingleTickerProviderSt
         bottom: TabBar(
           controller: _tabController,
           tabs: [
-            Tab(text: "ส่งคำสั่งซื้อ"),
-            Tab(text: "รับสินค้า"),
+            Tab(text: "ส่งคำสั่งขาย"),
+            Tab(text: "รับยางพาราแล้ว"),
             Tab(text: "โอนเงินให้ชาวสวน"),
           ],
         ),
       ),
-      body: TabBarView(
+       body: TabBarView(
         controller: _tabController,
         children: [
-          _buildOrders("ส่งคำสั่งซื้อ"),
-          _buildOrders("รับสินค้า"),
-          _buildOrders("โอนเงินให้ชาวสวน"),
+          buildTabContent("ส่งคำสั่งขาย"),
+          buildTabContent("รับยางพาราแล้ว"),
+          buildTabContent("โอนเงินให้ชาวสวน"),
         ],
       ),
     );
   }
-
-  Widget _buildOrders(String status) {
+ Widget buildTabContent(String status) {
     return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection("orderrequet").where("status", isEqualTo: status).snapshots(),
+      stream: FirebaseFirestore.instance
+          .collection("orderrequet")
+          .where("status", isEqualTo: status) // กรองตามสถานะ
+          .snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) {
           return Center(
             child: CircularProgressIndicator(),
           );
         }
-        return SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: snapshot.data!.docs.map<Widget>((orderrequetDocument) {
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    Card(
+        return ListView(
+          children: snapshot.data!.docs.map<Widget>((orderrequetDocument) {
+            return status == orderrequetDocument["status"]
+                ? Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Card(
                       elevation: 3,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            Text(
+                              "อีเมล์ชาวสวน: ${orderrequetDocument["emailfarmer"]}",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              "เลขที่คำสั่งขาย: ${orderrequetDocument.id}",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text("วันนี้: ${orderrequetDocument["date"]}"),
+                            Text(
+                                "เวลาที่เลือก: ${orderrequetDocument["time"]}"),
+                            Text(
+                                "ร้านรับซื้อ: ${orderrequetDocument["store"]}"),
+                            Text("ราคา: ${orderrequetDocument["price"]}"),
+                            SizedBox(height: 10),
                             Container(
                               decoration: BoxDecoration(
                                 border: Border(
                                   bottom: BorderSide(
-                                    color: Colors.grey[300]!,
-                                    width: 1.0,
+                                    color: Colors.brown,
+                                    width: 1.0, // Adjust divider thickness
                                   ),
                                 ),
                               ),
+                            ),
+                            Center(
                               child: Text(
-                                "วันนี้: ${orderrequetDocument["date"]}",
-                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            Container(
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                    color: Colors.grey[300]!,
-                                    width: 1.0,
-                                  ),
-                                ),
-                              ),
-                              child: Text("เวลาที่เลือก: ${orderrequetDocument["time"]}"),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                    color: Colors.grey[300]!,
-                                    width: 1.0,
-                                  ),
-                                ),
-                              ),
-                              child: Text("ร้านรับซื้อ: ${orderrequetDocument["store"]}"),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                    color: Colors.grey[300]!,
-                                    width: 1.0,
-                                  ),
-                                ),
-                              ),
-                              child: Text("ราคา: ${orderrequetDocument["price"]}"),
-                            ),
-                            SizedBox(height: 10),
-                            Container(
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                    color: Colors.grey[300]!,
-                                    width: 1.0,
-                                  ),
-                                ),
+                                "สถานะ: ${orderrequetDocument["status"]}",
                               ),
                             ),
                           ],
                         ),
                       ),
                     ),
-                  ],
-                ),
-              );
-            }).toList(),
-          ),
+                  )
+                : Container(); 
+          }).toList(),
         );
       },
     );

@@ -1,8 +1,12 @@
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:rub_yang/Pages/displayconfirm.dart';
+import 'package:rub_yang/storeview/confirmbk.dart';
 import 'package:rub_yang/storeview/ordercusto.dart';
 
 const List<String> TIME_SLOT = [
@@ -28,12 +32,18 @@ const List<String> TIME_SLOT = [
 class TimeSlot extends StatefulWidget {
   final String selectedStoreName;
   final List<num> priceSheets;
-  TimeSlot({required this.priceSheets, required this.selectedStoreName});
+  final String? rubberType;
+  TimeSlot({
+    required this.priceSheets,
+    required this.selectedStoreName,
+    this.rubberType,
+  });
   @override
   State<TimeSlot> createState() => _TimeSlotState();
 }
 
 class _TimeSlotState extends State<TimeSlot> {
+  final auth = FirebaseAuth.instance;
   final formKey = GlobalKey<FormState>();
   TextEditingController _controller = TextEditingController();
   late CollectionReference _orderrequestCollection;
@@ -54,6 +64,7 @@ class _TimeSlotState extends State<TimeSlot> {
         "",
         "",
         DateTime.now(),
+        "",
         "");
   }
 
@@ -65,17 +76,15 @@ class _TimeSlotState extends State<TimeSlot> {
         Provider.of<SelectedDateTimeProvider>(context).selectedTime;
     final selectedStore =
         Provider.of<SelectedDateTimeProvider>(context).selectedStoreName;
-         final status =
-        Provider.of<SelectedDateTimeProvider>(context).status;
+    final status = Provider.of<SelectedDateTimeProvider>(context).status;
     final selectedTimeProvider =
         Provider.of<SelectedDateTimeProvider>(context, listen: false);
     GlobalKey<FormState> _formKey =
         GlobalKey<FormState>(); // Initialize _formKey here
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'ตารางเวลานำยางมาขาย',
+          'จองเวลาส่งยาง',
           style: TextStyle(
             fontSize: 20.0,
             letterSpacing: 2.0,
@@ -83,176 +92,202 @@ class _TimeSlotState extends State<TimeSlot> {
             fontWeight: FontWeight.bold,
           ),
         ),
-      ),
-      body: Column(
-        children: [
-          Text(
-            'ร้านรับซื้อที่เลือก : ${widget.selectedStoreName}',
-            style: TextStyle(
-              color: Colors.brown[800],
-              fontSize: 18,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          Text(
-            'ราคาวันนี้: ${widget.priceSheets[0]}',
-            style: TextStyle(color: Colors.brown[800], fontSize: 18),
-          ),
-          Container(
-            color: Colors.brown,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Column(
-                        children: [
-                          Text(
-                            '${DateFormat.MMMM().format(selectedDate)}',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          Text(
-                            'วันนี้: ${DateFormat('dd/MM/yyyy').format(selectedDate)}',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: GridView.builder(
-              itemCount: TIME_SLOT.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-              ),
-              itemBuilder: (context, index) => GestureDetector(
-                onTap: () {
-                  if (!selectedTime.contains(TIME_SLOT[index])) {
-                    if (selectedTimeProvider
-                                .selectedCountPerSlot?[TIME_SLOT[index]]
-                                ?.compareTo(6) !=
-                            null &&
-                        selectedTimeProvider
-                                .selectedCountPerSlot![TIME_SLOT[index]]!
-                                .compareTo(6) >=
-                            0) {
-                      return;
-                    }
-                    selectedTimeProvider.selectTime(TIME_SLOT[index]);
-                    myOrderreq.selectedTime =
-                        TIME_SLOT[index]; 
-                  } else {
-                  }
-                },
-                child: Card(
-                  color: selectedTime.contains(TIME_SLOT[index])
-                      ? Colors.white10
-                      : (selectedTime.isNotEmpty &&
-                              selectedTime[0] == TIME_SLOT[index]
-                          ? Colors.white54
-                          : Colors.white),
-                  child: GridTile(
-                    header: selectedTime.isNotEmpty &&
-                            selectedTime[0] == TIME_SLOT[index]
-                        ? Icon(Icons.check)
-                        : null,
-                    child: Center(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('${TIME_SLOT[index]}'),
-                          Text(selectedTime.contains(TIME_SLOT[index])
-                              ? (selectedTimeProvider.selectedCountPerSlot?[
-                                              TIME_SLOT[index]] !=
-                                          null &&
-                                      (selectedTimeProvider
-                                                      .selectedCountPerSlot?[
-                                                  TIME_SLOT[index]] ??
-                                              0) >
-                                          6
-                                  ? 'Full (${selectedTimeProvider.selectedCountPerSlot![TIME_SLOT[index]]})'
-                                  : 'Available (${selectedTimeProvider.selectedCountPerSlot![TIME_SLOT[index]]})')
-                              : 'Available (${selectedTimeProvider.selectedCountPerSlot![TIME_SLOT[index]]})')
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Form(
-            key: _formKey, // Pass _formKey here
-            child: ElevatedButton(
-              onPressed: () async {
-                if (_formKey.currentState?.validate() ?? false) {
-                  _formKey.currentState?.save();
-                  await _orderrequestCollection.add({
-                    "farmer": myOrderreq.namefarmer,
-                    "price": widget.priceSheets,
-                    "store": widget.selectedStoreName,
-                    "date": myOrderreq.selectedDate,
-                    "time": myOrderreq.selectedTime,
-                    "today": myOrderreq.today_date,
-                     "status": "ส่งคำสั่งขาย",
-                  });
-                  _formKey.currentState?.reset();
-                  final selectedDateTimeProvider =
-                      Provider.of<SelectedDateTimeProvider>(context,
-                          listen: false);
-                  final selectedDate = selectedDateTimeProvider.selectedDate;
-                  final selectedTime =
-                      selectedDateTimeProvider.selectedTime.isNotEmpty
-                          ? selectedDateTimeProvider.selectedTime[0]
-                          : '';
-                  if (selectedTime.isNotEmpty) {
-                    final formattedDate =
-                        DateFormat('dd/MM/yyyy').format(selectedDate);
-                    selectedDateTimeProvider.setStoreAndPrice(
-                        store: widget.selectedStoreName,
-                        prices: widget.priceSheets);
-                        selectedDateTimeProvider.setStatus("ส่งคำสั่งขาย");
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          'วันที่จะมาส่ง: $formattedDate\nเวลาที่ส่ง: $selectedTime\n ราคา: ${widget.priceSheets} \n ร้านรับซื้อ: ${widget.selectedStoreName} \n สถานะ: ส่งคำสั่งขาย',
-                        ),
-                      ),
-                    );
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => OrderCust(),
-                      ),
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('กรุณาเลือกเวลาก่อน'),
-                      ),
-                    );
-                  }
-                }
-              },
-              child: Text('ส่งข้อมูล'),
-              style: ElevatedButton.styleFrom(
-                textStyle: TextStyle(fontSize: 18),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10.0),
+            child: Text(
+              auth.currentUser?.email ?? '',
+              style: TextStyle(
+                fontSize: 15,
+                color: Colors.brown,
               ),
             ),
           ),
         ],
       ),
+      body: Column(children: [
+        Text(
+          'ร้านรับซื้อที่เลือก : ${widget.selectedStoreName}',
+          style: TextStyle(
+            color: Colors.brown[800],
+            fontSize: 18,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+        Text(
+          'ชนิดยาง: ${widget.rubberType}',
+          style: TextStyle(
+            color: Colors.brown[800],
+            fontSize: 18,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        Text(
+          'ราคาวันนี้: ${widget.priceSheets[0]}',
+          style: TextStyle(color: Colors.brown[800], fontSize: 18),
+        ),
+        Container(
+          color: Colors.brown,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Column(
+                      children: [
+                        Text(
+                          '${DateFormat.MMMM().format(selectedDate)}',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Text(
+                          'วันนี้: ${DateFormat('dd/MM/yyyy').format(selectedDate)}',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: GridView.builder(
+            itemCount: TIME_SLOT.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+            ),
+            itemBuilder: (context, index) => GestureDetector(
+              onTap: () {
+                if (!selectedTime.contains(TIME_SLOT[index])) {
+                  if (selectedTimeProvider
+                              .selectedCountPerSlot?[TIME_SLOT[index]]
+                              ?.compareTo(6) !=
+                          null &&
+                      selectedTimeProvider
+                              .selectedCountPerSlot![TIME_SLOT[index]]!
+                              .compareTo(6) >=
+                          0) {
+                    return;
+                  }
+                  selectedTimeProvider.selectTime(TIME_SLOT[index]);
+                  myOrderreq.selectedTime = TIME_SLOT[index];
+                } else {}
+              },
+              child: Card(
+                color: selectedTime.contains(TIME_SLOT[index])
+                    ? Colors.white10
+                    : (selectedTime.isNotEmpty &&
+                            selectedTime[0] == TIME_SLOT[index]
+                        ? Colors.white54
+                        : Colors.white),
+                child: GridTile(
+                  header: selectedTime.isNotEmpty &&
+                          selectedTime[0] == TIME_SLOT[index]
+                      ? Icon(Icons.check)
+                      : null,
+                  child: Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('${TIME_SLOT[index]}'),
+                        Text(selectedTime.contains(TIME_SLOT[index])
+                            ? (selectedTimeProvider.selectedCountPerSlot?[
+                                            TIME_SLOT[index]] !=
+                                        null &&
+                                    (selectedTimeProvider.selectedCountPerSlot?[
+                                                TIME_SLOT[index]] ??
+                                            0) >
+                                        6
+                                ? 'Full (${selectedTimeProvider.selectedCountPerSlot![TIME_SLOT[index]]})'
+                                : 'Available (${selectedTimeProvider.selectedCountPerSlot![TIME_SLOT[index]]})')
+                            : 'Available (${selectedTimeProvider.selectedCountPerSlot![TIME_SLOT[index]]})')
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        Form(
+          key: _formKey,
+          child: ElevatedButton(
+            onPressed: () async {
+              if (_formKey.currentState?.validate() ?? false) {
+                _formKey.currentState?.save();
+                var id = generateRandomId(10);
+                await _orderrequestCollection.doc(id).set({
+                  // "farmer": myOrderreq.namefarmer,
+                  "price": widget.priceSheets,
+                  "store": widget.selectedStoreName,
+                  "date": myOrderreq.selectedDate,
+                  "time": myOrderreq.selectedTime,
+                  "today": myOrderreq.today_date,
+                  "status": "ส่งคำสั่งขาย",
+                  "emailfarmer": auth.currentUser?.email ?? '',
+                  "rubberType": widget.rubberType,
+                });
+                print('เลข ID ของเอกสารที่เพิ่งสร้างขึ้น: $id');
+                _formKey.currentState?.reset();
+                final selectedDateTimeProvider =
+                    Provider.of<SelectedDateTimeProvider>(context,
+                        listen: false);
+                final selectedDate = selectedDateTimeProvider.selectedDate;
+                final selectedTime =
+                    selectedDateTimeProvider.selectedTime.isNotEmpty
+                        ? selectedDateTimeProvider.selectedTime[0]
+                        : '';
+                if (selectedTime.isNotEmpty) {
+                  final formattedDate =
+                      DateFormat('dd/MM/yyyy').format(selectedDate);
+                  selectedDateTimeProvider.setStoreAndPrice(
+                      store: widget.selectedStoreName,
+                      prices: widget.priceSheets);
+                  selectedDateTimeProvider.setStatus("ส่งคำสั่งขาย");
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'เลขคำสั่งซื้อ:${id} \n วันที่จะมาส่ง: $formattedDate\nเวลาที่ส่ง: $selectedTime\n ราคา: ${widget.priceSheets} \n ร้านรับซื้อ: ${widget.selectedStoreName} \n สถานะ: ส่งคำสั่งขาย \n ชนิดยาง: ${widget.rubberType}',
+                      ),
+                    ),
+                  );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                 builder: (context) => ConfirmOrderPage(
+                        id: id,
+                        formattedDate: formattedDate,
+                        selectedTime: selectedTime,
+                        priceSheets: widget.priceSheets,
+                        selectedStoreName: widget.selectedStoreName,
+                        rubberType: widget.rubberType!,
+                      ),
+                    ),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('กรุณาเลือกเวลาก่อน'),
+                    ),
+                  );
+                }
+              }
+            },
+            child: const Text('ส่งข้อมูล'),
+            style: ElevatedButton.styleFrom(
+              textStyle: TextStyle(fontSize: 18),
+            ),
+          ),
+        ),
+      ]),
     );
   }
 }
@@ -269,7 +304,7 @@ class SelectedDateTimeProvider extends ChangeNotifier {
   Map<String, int>? get selectedCountPerSlot => _selectedCountPerSlot;
   String get selectedStoreName => _selectedStoreName;
   List<num> get priceSheets => _priceSheets; // Getter for priceSheets
-   String get status => _status;
+  String get status => _status;
   void setStoreAndPrice({required String store, required List<num> prices}) {
     _selectedStoreName = store;
     _priceSheets = prices; // Set the priceSheets
@@ -293,7 +328,8 @@ class SelectedDateTimeProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
-void setStatus(String newStatus) {
+
+  void setStatus(String newStatus) {
     _status = newStatus;
     notifyListeners();
   }
@@ -305,14 +341,14 @@ void setStatus(String newStatus) {
     required String time,
     required String selectedStoreName,
     required List<num> priceSheets,
-     required String status, // Include priceSheets here
+    required String status, // Include priceSheets here
   }) {
     _bookings.add({
       'date': date,
       'time': time,
       'selectedStoreName': selectedStoreName,
-      'priceSheets': priceSheets, 
-      'status' :status,
+      'priceSheets': priceSheets,
+      'status': status,
     });
     notifyListeners();
   }
@@ -347,7 +383,8 @@ class orderrequest {
   String priceSheets = '';
   String selectedTime = '';
   late DateTime today_date;
-  late String status='';
+  late String status = '';
+  late String rubberType = '';
   orderrequest(
     // this.id,
     this.namefarmer,
@@ -357,8 +394,21 @@ class orderrequest {
     this.selectedTime,
     this.today_date,
     this.status,
+    this.rubberType,
   );
 }
+
+String generateRandomId(int length) {
+  const characters = 'ABCDEFGHIJKLMN123456789';
+  final random = Random();
+  return String.fromCharCodes(
+    Iterable.generate(
+      length,
+      (_) => characters.codeUnitAt(random.nextInt(characters.length)),
+    ),
+  );
+}
+
 // class SelectedDateTimeProvider extends ChangeNotifier {
 //   DateTime _selectedDate = DateTime.now();
 //   List<String> _selectedTime = [];

@@ -18,20 +18,18 @@ class _NameStoreState extends State<NameStore> {
   StoreController _storeController = StoreController();
   List<String> selectedPrice = [];
   List<num> priceSheets=[];
-
+String? selectedRubberType; 
   @override
   void initState() {
     super.initState();
     _getStores();
   }
-
   void _getStores() async {
     print('_getStores start');
     var newStoreData = await _storeController.fetchStores();
     print(newStoreData.length);
     stores = newStoreData;
   }
-
   @override
   Widget build(BuildContext context) {
     Future.delayed(Duration.zero, () {
@@ -96,6 +94,7 @@ class _NameStoreState extends State<NameStore> {
                             setState(() {
                               selectedPrice.clear();
                               selectedPrice.add(value.toString());
+                               selectedRubberType = 'ยางก้อน';
                             });
                           },
                         ),
@@ -112,6 +111,7 @@ class _NameStoreState extends State<NameStore> {
                             setState(() {
                               selectedPrice.clear();
                               selectedPrice.add(value.toString());
+                                selectedRubberType = 'ยางแผ่น';
                             });
                           },
                         ),
@@ -128,6 +128,7 @@ class _NameStoreState extends State<NameStore> {
                             setState(() {
                               selectedPrice.clear();
                               selectedPrice.add(value.toString());
+                                selectedRubberType = 'น้ำยาง';
                             });
                           },
                         ),
@@ -143,6 +144,7 @@ class _NameStoreState extends State<NameStore> {
                                     builder: (context) => TimeSlot(
                                       priceSheets: selectedNumbers,
                                        selectedStoreName: widget.selectedStoreName,
+                                       rubberType: selectedRubberType,
                                     ),
                                   ),
                                 );
