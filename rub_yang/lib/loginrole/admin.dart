@@ -2,10 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rub_yang/Pages/aboutpdf/%E0%B9%89listreport.dart';
 import 'package:rub_yang/Pages/farmerInfor.dart';
+import 'package:rub_yang/Pages/farmerevent.dart';
+import 'package:rub_yang/facview/kanyangform.dart';
 import 'package:rub_yang/facview/listkanyang.dart';
 import 'package:rub_yang/loginrole/login_pagerole.dart';
 import 'package:rub_yang/storeview/homestore.dart';
 import 'package:rub_yang/storeview/insertvalue.dart';
+import 'package:rub_yang/storeview/quallityyang.dart';
 
 class Admin extends StatefulWidget {
   const Admin({Key? key}) : super(key: key);
@@ -115,38 +118,29 @@ class ListItem {
 }
 class ListTab extends StatelessWidget {
  final List<ListItem> entries = [
-
- ListItem(
-      title: 'ราคาเปิด',
+ListItem(
+      title: 'รายงานข้อมูลชาวสวนสำหรับส่งกยท',
+      details2: 'รายงานข้อมูลชาวสวนสำหรับส่งกยท',
+    ),
+    ListItem(
+      title: 'ประวัติย้อนหลังส่งโรงงาน',
+      details2: 'ประวัติย้อนหลังส่งโรงงานแต่ละรอบ',
+    ),
+    ListItem(
+      title: 'อัพเดทแคมเปญกยท',
+      details2: 'อัพเดทแคมเปญกยท',
+    ),
+     ListItem(
+      title:  'อัพเดทราคากลาง',
       details2: '1.ราคาเปิดกยทแต่ละวัน จะแบ่งเป็น \n1.1.ยางแผ่นดิบ \n1.2 น้ำยางสด ณโรงงาน\n1.3.Rss3 \n 2.ราคาที่ให้พิเศษ ',
+    ),
+     ListItem(
+      title: 'กยท.ใกล้คุณ',
+      details2: 'การยางแห่งประเทศไทยแต่ละสาขาในจังหวัดสุราษฎร์',
     ),
   ListItem(
     title: 'คุณภาพยางพาราชาวสวน',
     details2: 'เช็คคุณภาพควรเข้าร่วมการอบรมพัฒนาคุณภาพ?',
-  ),
-  ListItem(
-    title: 'รายการต้นไม้เกิน25ปี',
-    details2: 'รายการต้นไม้เกิน25ปีของชาวสวนแต่ละรายและแต่ละแปลง(เพื่อยื่นขอทุนปลูกใหม่) \n ราคาขายไม้ตามตลาดกลาง',
-  ),
-  ListItem(
-    title: 'รายชื่อชาวสวนที่จะเข้าร่วมอบรม',
-    details2: 'รายชื่อชาวสวนที่จะเข้าร่วมอบรมเพื่อพัฒนาคุณภาพยางพาราตามการยางสนับสนุน',
-  ),
-  // ListItem(
-  //   title: 'ประวัติย้อนหลังส่งโรงงาน',
-  //   details2: 'ประวัติย้อนหลังส่งโรงงานแต่ละรอบ',
-  // ),
-  // ListItem(
-  //   title: 'โรงงานใกล้คุณ',
-  //   details2: 'โรงงานใกล้คุณ',
-  // ),
-  ListItem(
-    title: 'กยท.ใกล้คุณ',
-    details2: 'การยางแห่งประเทศไทยแต่ละสาขาในจังหวัดสุราษฎร์',
-  ),
-    ListItem(
-    title: 'รายการที่สามารถดึงPDF',
-    details2: 'รายการที่สามารถดึงPDF',
   ),
 ];
 
@@ -167,7 +161,8 @@ class ListTab extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>InsertValue()
+                          builder: (context) =>Farmer_Infor(
+                          ),
                         ),
                       );
                     }
@@ -175,12 +170,21 @@ class ListTab extends StatelessWidget {
                         Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>ListKanyang(
+                          builder: (context) =>Factory_Infor(
                           ),
                         ),
                        );
                       }
-                        else if (index == 2){
+                      //   else if (index == 3){
+                      //   Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) =>ListFactory(
+                      //     ),
+                      //   ),
+                      //  );
+                      // }
+                       else if (index == 4){
                         Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -188,21 +192,20 @@ class ListTab extends StatelessWidget {
                           ),
                         ),
                        );
-                      }
-                       else if (index == 3){
+                      }else if (index == 2){
                         Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>ListKanyang(
+                          builder: (context) =>FormKanyang(
                           ),
                         ),
                        );
                       }
-                         else if (index == 4){
+                      else if (index == 3){
                         Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>ListKanyang(
+                          builder: (context) =>InsertValue(
                           ),
                         ),
                        );
@@ -211,8 +214,7 @@ class ListTab extends StatelessWidget {
                         Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>ListReport(
-                          ),
+                          builder: (context) =>Quanlity(),
                         ),
                        );
                       }

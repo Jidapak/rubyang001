@@ -11,7 +11,13 @@ class _ListKanYangState extends State<ListKanyang> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("การยางแต่ละอำเภอสุราษฎร์"),
+        title: Text("การยางแต่ละอำเภอสุราษฎร์",
+           style: TextStyle(
+              color: Colors.brown,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+        ),
+      ),
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection("kanyang").snapshots(),

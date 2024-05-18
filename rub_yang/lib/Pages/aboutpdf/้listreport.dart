@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rub_yang/Pages/aboutpdf/homereport.dart';
 import 'package:rub_yang/Pages/aboutpdf/homereport2.dart';
+import 'package:rub_yang/Pages/aboutpdf/pdfpayment.dart';
 import 'package:rub_yang/Pages/showprofile.dart';
 import 'package:rub_yang/storeview/confirmbk.dart';
 import 'package:rub_yang/storeview/insertprice.dart';
@@ -62,7 +63,7 @@ class ListReport extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => InsertPrice(),
+                        builder: (context) => PDFpayment(),
                       ),
                     );
                     break;

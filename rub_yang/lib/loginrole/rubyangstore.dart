@@ -71,7 +71,7 @@ class RubyangStore extends StatelessWidget {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, '/10');
+                          Navigator.pushNamed(context, '/14');
                         },
                         style: ButtonStyle(
                           backgroundColor:

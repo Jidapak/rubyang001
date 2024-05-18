@@ -19,12 +19,18 @@ class _ListOrderReqState extends State<ListOrderReq> with SingleTickerProviderSt
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("รายการขายยาง"),
+        title: Text("รายการขายยาง",
+        style: TextStyle(
+                  color: Colors.brown,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+        ),
         bottom: TabBar(
           controller: _tabController,
           tabs: [
             Tab(text: "ส่งคำสั่งขาย"),
-            Tab(text: "รับยางพาราแล้ว"),
+            Tab(text: "รับคำสั่งขาย"),
             Tab(text: "โอนเงินให้ชาวสวน"),
           ],
         ),
@@ -33,7 +39,7 @@ class _ListOrderReqState extends State<ListOrderReq> with SingleTickerProviderSt
         controller: _tabController,
         children: [
           buildTabContent("ส่งคำสั่งขาย"),
-          buildTabContent("รับยางพาราแล้ว"),
+          buildTabContent("รับคำสั่งขาย"),
           buildTabContent("โอนเงินให้ชาวสวน"),
         ],
       ),

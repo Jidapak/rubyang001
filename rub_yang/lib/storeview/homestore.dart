@@ -5,19 +5,20 @@ import 'package:rub_yang/storeview/confirmbk.dart';
 import 'package:rub_yang/storeview/insertprice.dart';
 import 'package:rub_yang/storeview/ordercusto.dart';
 import 'package:rub_yang/storeview/storedetail_Form.dart';
+import 'package:rub_yang/storeview/totalorderdaily.dart';
 
 class HomeStore extends StatelessWidget {
   final String selectedStoreName;
   final num priceSheets; // Declare priceSheets as a list
   HomeStore({required this.priceSheets, required this.selectedStoreName});
-  final List<String> entries = ['A', 'B', 'C', 'D','E'];
+  final List<String> entries = ['A', 'B', 'C','D'];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(
-          'ร้านรับซื้อ',
+          'ร้านรับยาง(ออเดอร์ชาวสวน)',
           style: TextStyle(
             fontSize: 20.0,
             letterSpacing: 2.0,
@@ -32,13 +33,13 @@ class HomeStore extends StatelessWidget {
           crossAxisCount: 2,
           crossAxisSpacing: 16.0,
           mainAxisSpacing: 16.0,
-          children: List.generate(5, (index) {
+          children: List.generate(4, (index) {
             List<String> textList = [
               'รายการออเดอร์ \n จากชาวสวน',
               'สถานะการซื้อขายยาง',
               'อัพเดทราคารายวัน',
-              'อัพเดทรายละเอียดร้าน',
-              'รายละเอียดชาวสวน',
+              'ยอดรวมวันนี้',
+              // 'รายละเอียดชาวสวน',
             ];
             return GestureDetector(
               onTap: () {
@@ -75,16 +76,16 @@ class HomeStore extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Form_Store(),
+                        builder: (context) => TotlalOrderReq(),
                       ),
                     );
-                    case 4:
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => showprofile(),
-                      ),
-                    );
+                    // case 4:
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => showprofile(),
+                    //   ),
+                    // );
                   default:
                     break;
                     

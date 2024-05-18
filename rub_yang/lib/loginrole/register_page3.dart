@@ -1,19 +1,17 @@
-import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:rub_yang/loginrole/insertprofile.dart';
-import 'package:rub_yang/loginrole/insertstore.dart';
+import 'package:rub_yang/facview/listkanyang.dart';
 import 'package:rub_yang/loginrole/login_pagerole.dart';
-import 'package:uuid/uuid.dart';
 
-class Register_page extends StatefulWidget {
+class RubyangStore3 extends StatefulWidget {
+  const RubyangStore3({Key? key});
   @override
-  _RegisterState createState() => _RegisterState();
+  State<RubyangStore3> createState() => _RubyangStore3State();
 }
 
-class _RegisterState extends State<Register_page> {
-  _RegisterState();
+class _RubyangStore3State extends State<RubyangStore3> {
+  // _RegisterState();
 
   bool showProgress = false;
   bool visible = false;
@@ -29,8 +27,8 @@ class _RegisterState extends State<Register_page> {
   final TextEditingController mobile = new TextEditingController();
   bool _isObscure = true;
   bool _isObscure2 = true;
-  File? file;
-  var options = ['ชาวสวน', 'ร้านรับซื้อยาง', 'ผู้ดูแลระบบ'];
+  // File? file;
+  var options = ['ชาวสวน'];
   var _currentItemSelected = "ชาวสวน";
   var role = "ร้านรับซื้อยาง";
   var role2 = "ผู้ดูแลระบบ";
@@ -223,8 +221,8 @@ class _RegisterState extends State<Register_page> {
                               onChanged: (newValueSelected) {
                                 setState(() {
                                   _currentItemSelected = newValueSelected!;
-                                  role = newValueSelected;
-                                  role = newValueSelected;
+                                  // role = newValueSelected;
+                                  // role = newValueSelected;
                                 });
                               },
                               value: _currentItemSelected,
@@ -271,37 +269,20 @@ class _RegisterState extends State<Register_page> {
                                 setState(() {
                                   showProgress = true;
                                 });
-                                if (_currentItemSelected == "ชาวสวน") {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => FarmerInsert(),
-                                    ),
-                                  );
-                                }if (_currentItemSelected == "ร้านรับซื้อยาง") {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => StoreInsert(),
-                                    ),
-                                  );
-                                } if (_currentItemSelected == "ผู้ดูแลระบบ") {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => Register_page(),
-                                    ),
-                                  );
-                                }else {
-                                  signUp(emailController.text,
+                                 signUp(emailController.text,
                                       passwordController.text, role, context);
-                                  // showDialog(
-                                  //   context: context,
-                                  //   builder: (BuildContext context) {
-                                  //     return RegistrationSuccessDialog();
-                                  //   },
-                                  // );
-                                }
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return RegistrationSuccessDialog();
+                                  },
+                                );
+                                // นำผู้ใช้งานไปยังหน้า Login หลังจากลงทะเบียนเสร็จสิ้น
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Login_Page()),
+                                );
                               },
                               child: Text(
                                 "ลงทะเบียน",
@@ -337,7 +318,7 @@ class _RegisterState extends State<Register_page> {
     }
   }
 
-  final uuid = Uuid();
+  // final uuid = Uuid();
   postDetailsToFirestore(
       String email, String role, BuildContext context, dynamic value) async {
     print("uservalue $value");
@@ -359,6 +340,7 @@ class _RegisterState extends State<Register_page> {
     );
   }
 }
+
 class RegistrationSuccessDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

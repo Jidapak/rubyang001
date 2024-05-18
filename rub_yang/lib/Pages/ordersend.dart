@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
 import 'package:flutter/material.dart';
 
 class OrderSend extends StatefulWidget {
@@ -6,44 +7,122 @@ class OrderSend extends StatefulWidget {
   _OrderSendState createState() => _OrderSendState();
 }
 
-class _OrderSendState extends State<OrderSend>with SingleTickerProviderStateMixin  {
- late TabController _tabController;
+class _OrderSendState extends State<OrderSend>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("รายการขายยาง"),
+        title: Text("กิจกรรมขายยาง",
+         style: TextStyle(
+            fontSize: 20.0,
+            letterSpacing: 2.0,
+            color: Colors.brown,
+            fontWeight: FontWeight.bold,
+          ),
+          ),
         bottom: TabBar(
           controller: _tabController,
           tabs: [
-            Tab(text: "ส่งคำสั่งขาย"),
-            Tab(text: "รับยางพาราแล้ว"),
-            Tab(text: "โอนเงินให้ชาวสวน"),
+            Tab(text: "รายการล่าสุด"),
+            Tab(text: "รายการย้อนหลัง"),
           ],
         ),
       ),
-       body: TabBarView(
+      body: TabBarView(
         controller: _tabController,
         children: [
-          buildTabContent("ส่งคำสั่งขาย"),
-          buildTabContent("รับยางพาราแล้ว"),
-          buildTabContent("โอนเงินให้ชาวสวน"),
+          buildLatestTabContent(),
+          buildHistoryTabContent(),
         ],
       ),
     );
   }
- Widget buildTabContent(String status) {
+Widget buildLatestTabContent() {
+  return StreamBuilder(
+    stream: FirebaseFirestore.instance
+        .collection("orderrequet")
+        .where("emailfarmer",
+            isEqualTo: FirebaseAuth.instance.currentUser!.email)
+        .where("status", isEqualTo: "ส่งคำสั่งขาย") // Add filter for status
+        // .orderBy('date', descending: true)
+       .snapshots(),
+    builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+      if (!snapshot.hasData) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+      return ListView(
+        children: snapshot.data!.docs.map<Widget>((orderrequetDocument) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Card(
+              elevation: 3,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "อีเมล์ชาวสวน: ${orderrequetDocument["emailfarmer"]}",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      "เลขที่คำสั่งขาย: ${orderrequetDocument.id}",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text("วันนี้: ${orderrequetDocument["date"]}"),
+                    Text("เวลาที่เลือก: ${orderrequetDocument["time"]}"),
+                    Text("ร้านรับซื้อ: ${orderrequetDocument["store"]}"),
+                    Text("ราคา: ${orderrequetDocument["price"]}"),
+                      Text("โอนเงินโดย: ${orderrequetDocument["_selectedPaymentMethod"]}"),
+                    SizedBox(height: 10),
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Colors.brown,
+                            width: 1.0, // Adjust divider thickness
+                          ),
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: Text(
+                        "สถานะ: ${orderrequetDocument["status"]}",
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }).toList(),
+      );
+    },
+  );
+}
+   Widget buildHistoryTabContent() {
     return StreamBuilder(
       stream: FirebaseFirestore.instance
           .collection("orderrequet")
-          .where("status", isEqualTo: status) // กรองตามสถานะ
+          .where("emailfarmer", isEqualTo: FirebaseAuth.instance.currentUser!.email)
+          .where("status", whereIn: ["โอนเงินให้ชาวสวน", "รับคำสั่งขาย", "ปฏิเสธออเดอร์"]) // Filter by multiple statuses
           .snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) {
@@ -53,58 +132,60 @@ class _OrderSendState extends State<OrderSend>with SingleTickerProviderStateMixi
         }
         return ListView(
           children: snapshot.data!.docs.map<Widget>((orderrequetDocument) {
-            return status == orderrequetDocument["status"]
-                ? Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Card(
-                      elevation: 3,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "อีเมล์ชาวสวน: ${orderrequetDocument["emailfarmer"]}",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              "เลขที่คำสั่งขาย: ${orderrequetDocument.id}",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text("วันนี้: ${orderrequetDocument["date"]}"),
-                            Text(
-                                "เวลาที่เลือก: ${orderrequetDocument["time"]}"),
-                            Text(
-                                "ร้านรับซื้อ: ${orderrequetDocument["store"]}"),
-                            Text("ราคา: ${orderrequetDocument["price"]}"),
-                            SizedBox(height: 10),
-                            Container(
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                    color: Colors.brown,
-                                    width: 1.0, // Adjust divider thickness
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Center(
-                              child: Text(
-                                "สถานะ: ${orderrequetDocument["status"]}",
-                              ),
-                            ),
-                          ],
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Card(
+                elevation: 3,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "อีเมล์ชาวสวน: ${orderrequetDocument["emailfarmer"]}",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
                         ),
                       ),
-                    ),
-                  )
-                : Container(); // ไม่แสดงอะไรเลยถ้าไม่ match กับสถานะ
+                      SizedBox(height: 10),
+                      Text(
+                        "เลขที่คำสั่งขาย: ${orderrequetDocument.id}",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text("วันนี้: ${orderrequetDocument["date"]}"),
+                      Text("เวลาที่เลือก: ${orderrequetDocument["time"]}"),
+                      Text("ร้านรับซื้อ: ${orderrequetDocument["store"]}"),
+                      Text("ราคา: ${orderrequetDocument["price"]}"),
+                      Text("รูปแบบจ่ายเงิน: ${orderrequetDocument["_selectedPaymentMethod"]}"),
+                      SizedBox(height: 10),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: Colors.brown,
+                              width: 1.0, // Adjust divider thickness
+                            ),
+                          ),
+                        ),
+                      ),
+                      Center(
+                        child: Text(
+                          "สถานะ: ${orderrequetDocument["status"]}",
+                          style: TextStyle(
+                            color: orderrequetDocument["status"] == "ปฏิเสธออเดอร์"
+                                ? Colors.red
+                                : Colors.black,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
           }).toList(),
         );
       },

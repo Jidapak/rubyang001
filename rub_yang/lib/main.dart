@@ -21,6 +21,7 @@ import 'package:rub_yang/Pages/login.dart';
 import 'package:rub_yang/Pages/notipay.dart';
 import 'package:rub_yang/Pages/ordersend.dart';
 import 'package:rub_yang/Pages/register.dart';
+import 'package:rub_yang/Pages/statusorder.dart';
 import 'package:rub_yang/Pages/timeslot.dart';
 // import 'package:rub_yang/Pages/timeslot.dart';
 import 'package:rub_yang/facview/fachistory.dart';
@@ -30,6 +31,7 @@ import 'package:rub_yang/facview/orderfactory.dart';
 import 'package:rub_yang/facview/statusfactory.dart';
 import 'package:rub_yang/firebase_options.dart';
 import 'package:rub_yang/loginrole/forgotpassw.dart';
+import 'package:rub_yang/loginrole/listtap2.dart';
 import 'package:rub_yang/loginrole/login_pagerole.dart';
 import 'package:rub_yang/model/storemodel.dart';
 import 'package:rub_yang/storeview/confirmbk.dart';
@@ -113,6 +115,10 @@ class MyApp extends StatelessWidget {
         '/8': (context) => HomeFactory(),
         '/9': (context) => LandingPage(),
         '/10': (context) => ListTab(
+              priceSheets: priceSheets,
+              selectedStoreName: selectedStoreName,
+            ),
+            '/14': (context) => ListTab2(
               priceSheets: priceSheets,
               selectedStoreName: selectedStoreName,
             ),

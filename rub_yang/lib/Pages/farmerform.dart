@@ -524,36 +524,42 @@ class _FarmerInfState extends State<FarmerForm> {
                             ),
                           ],
                         ),
-                       
+                      
                         SizedBox(height: 16),
                         ButtonTheme(
-                          minWidth: double.infinity,
-                          buttonColor: Colors.brown,
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              if (formKey.currentState?.validate() ?? false) {
-                                formKey.currentState?.save();
-                                await _farmerDataCollection.add({
-                                  'namefarmer': namefarmer,
-                                  'lastnfarmer': lastnfarmer,
-                                  'nationality': nationality,
-                                  'areafarm': areafarm,
-                                  'quantitytree': quantitytree,
-                                  'agetree': agetree,
-                                  'location': location,
-                                  'selectedCountry': selectedCountry,
-                                  'selectedState': selectedState,
-                                  'selectedCity': selectedCity,
-                                  'telnum ': telnum,
-                                  '_radioValue11': _radioValue11,
-                                  '_radioValue12': _radioValue12,
-                                });
-                                formKey.currentState?.reset();
-                              }
-                            },
-                            child: Text(
-                              'บันทึก'
-                              ),
+                          child: Container(
+                            width: double.infinity,
+                            color: Colors.brown[500],
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                if (formKey.currentState?.validate() ?? false) {
+                                  formKey.currentState?.save();
+                                  await _farmerDataCollection.add({
+                                    'namefarmer': namefarmer,
+                                    'lastnfarmer': lastnfarmer,
+                                    'nationality': nationality,
+                                    'areafarm': areafarm,
+                                    'quantitytree': quantitytree,
+                                    'agetree': agetree,
+                                    'location': location,
+                                    'selectedCountry': selectedCountry,
+                                    'selectedState': selectedState,
+                                    'selectedCity': selectedCity,
+                                    'telnum ': telnum,
+                                    '_radioValue11': _radioValue11,
+                                    '_radioValue12': _radioValue12,
+                                  });
+                                  formKey.currentState?.reset();
+                                }
+                              },
+                              child: Text(
+                                'บันทึก',
+                                style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600
+                                 ),
+                                ),
+                            ),
                           ),
                         ),
                       ],

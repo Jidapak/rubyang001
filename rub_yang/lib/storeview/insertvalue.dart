@@ -40,7 +40,13 @@ class _InsertValueState extends State<InsertValue> {
         if (snapshot.connectionState == ConnectionState.done) {
           return Scaffold(
               appBar: AppBar(
-                title: Text('อัพเดทราคากลางตามการยาง'),
+                title: Text('อัพเดทราคากลางตามการยาง',
+                 style: TextStyle(
+                  color: Colors.brown,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+                ),
               ),
               body: Container(
                 padding: const EdgeInsets.all(16.0),

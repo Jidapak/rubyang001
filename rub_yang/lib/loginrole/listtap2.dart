@@ -21,10 +21,10 @@ class ListItem {
   final String details2;
   ListItem({required this.title, required this.details2});
 }
-class ListTab extends StatelessWidget {
+class ListTab2 extends StatelessWidget {
    final String selectedStoreName;
   final num priceSheets; // Declare priceSheets as a list
-  ListTab({required this.priceSheets, required this.selectedStoreName});
+  ListTab2({required this.priceSheets, required this.selectedStoreName});
   final List<ListItem> entries = [
     ListItem(
       title: 'ร้านรับยาง(ออเดอร์ชาวสวน)',
@@ -68,14 +68,14 @@ class ListTab extends StatelessWidget {
       title: 'ประวัติย้อนหลังส่งโรงงาน',
       details2: 'ประวัติย้อนหลังส่งโรงงานแต่ละรอบ',
     ),
-    ListItem(
-      title: 'อัพเดทแคมเปญกยท',
-      details2: 'อัพเดทแคมเปญกยท',
-    ),
-     ListItem(
-      title:  'อัพเดทราคากลาง',
-      details2: '1.ราคาเปิดกยทแต่ละวัน จะแบ่งเป็น \n1.1.ยางแผ่นดิบ \n1.2 น้ำยางสด ณโรงงาน\n1.3.Rss3 \n 2.ราคาที่ให้พิเศษ ',
-    ),
+    // ListItem(
+    //   title: 'อัพเดทแคมเปญกยท',
+    //   details2: 'อัพเดทแคมเปญกยท',
+    // ),
+    //  ListItem(
+    //   title:  'อัพเดทราคากลาง',
+    //   details2: '1.ราคาเปิดกยทแต่ละวัน จะแบ่งเป็น \n1.1.ยางแผ่นดิบ \n1.2 น้ำยางสด ณโรงงาน\n1.3.Rss3 \n 2.ราคาที่ให้พิเศษ ',
+    // ),
      ListItem(
       title: 'กยท.ใกล้คุณ',
       details2: 'การยางแห่งประเทศไทยแต่ละสาขาในจังหวัดสุราษฎร์',

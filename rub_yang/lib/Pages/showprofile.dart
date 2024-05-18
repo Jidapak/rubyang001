@@ -11,7 +11,13 @@ class _showprofileState extends State<showprofile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("ประวัติชาวสวน"),
+        title: Text("ประวัติชาวสวน",
+         style: TextStyle(
+                  color: Colors.brown,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+        ),
       ),
       body: StreamBuilder(
         stream:

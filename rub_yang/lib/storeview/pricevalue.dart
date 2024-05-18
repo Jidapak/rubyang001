@@ -15,7 +15,7 @@ class _PriceValueState extends State<PriceValue> {
         title: Text(
           "ราคากลางของการยาง",
           style: TextStyle(
-            fontSize: 24.0,
+            fontSize: 20.0,
             letterSpacing: 2.0,
             color: Colors.brown,
             fontWeight: FontWeight.bold,
@@ -23,8 +23,7 @@ class _PriceValueState extends State<PriceValue> {
         ),
       ),
       body: StreamBuilder(
-        stream:
-            FirebaseFirestore.instance.collection("centerprices").snapshots(),
+        stream: FirebaseFirestore.instance.collection("centerprices").orderBy("today_date", descending: true).snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
             return Center(

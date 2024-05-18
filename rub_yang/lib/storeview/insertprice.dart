@@ -55,7 +55,13 @@ class _InsertPriceState extends State<InsertPrice> {
         if (snapshot.connectionState == ConnectionState.done) {
           return Scaffold(
             appBar: AppBar(
-              title: Text('อัพเดทราคา'),
+              title: Text('อัพเดทราคา',
+                   style: TextStyle(
+                  color: Colors.brown,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
             body: Padding(
               padding: const EdgeInsets.all(16.0),

@@ -7,7 +7,7 @@ class HomePageR extends StatelessWidget {
   },
   1: {
     "icon": Icons.document_scanner,
-    "text": 'รายการขาย\nยางของคุณ',
+    "text": 'กิจกรรมขาย\nยางของคุณ',
   },
   2: {
     "icon": Icons.price_change_rounded,
@@ -23,7 +23,7 @@ class HomePageR extends StatelessWidget {
   // },
   4: {
     "icon": Icons.sell,
-    "text": '   ราคา \n แต่ละร้าน',
+    "text": ' รายละเอียด \n แต่ละร้าน',
   },
       5: {
     "icon": Icons.newspaper,

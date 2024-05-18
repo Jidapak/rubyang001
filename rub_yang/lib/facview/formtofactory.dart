@@ -8,7 +8,6 @@ class FormFactory extends StatefulWidget {
   @override
   _FormFactoryState createState() => _FormFactoryState();
 }
-
 class _FormFactoryState extends State<FormFactory> {
   final formKey = GlobalKey<FormState>();
   String namerubyang = '';

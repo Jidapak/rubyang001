@@ -6,12 +6,12 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:rub_yang/loginrole/Register_page2.dart';
 import 'package:rub_yang/model/profile.dart';
 
-class FarmerInsert extends StatefulWidget {
+class StoreInsert extends StatefulWidget {
   @override
-  _FarmerInsertState createState() => _FarmerInsertState();
+  _StoreInsertState createState() => _StoreInsertState();
 }
 
-class _FarmerInsertState extends State<FarmerInsert> {
+class _StoreInsertState extends State<StoreInsert> {
   final formKey = GlobalKey<FormState>();
   late TextEditingController _accountController;
 
@@ -27,10 +27,10 @@ class _FarmerInsertState extends State<FarmerInsert> {
     super.dispose();
   }
 
-  Profile myProfile = Profile("", "", "", "", "", "", "", "", "", "");
+  Profile myProfile = Profile("", "", "", "", "", "", "","");
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
   CollectionReference _profileCollection =
-      FirebaseFirestore.instance.collection("farmerprofile");
+      FirebaseFirestore.instance.collection("storeprofile");
   //เตรียมfirebase
   @override
   Widget build(BuildContext context) {
@@ -50,7 +50,7 @@ class _FarmerInsertState extends State<FarmerInsert> {
           if (snapshot.connectionState == ConnectionState.done) {
             return Scaffold(
               appBar: AppBar(
-                title: Text('รายละเอียดชาวสวน'),
+                title: Text('รายละเอียดร้านค้า'),
               ),
               body: Container(
                 padding: const EdgeInsets.all(16.0),
@@ -62,7 +62,7 @@ class _FarmerInsertState extends State<FarmerInsert> {
                       children: [
                         SizedBox(height: 10),
                         Text(
-                          'ชื่อชาวสวน',
+                          'ชื่อร้าน',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -70,7 +70,7 @@ class _FarmerInsertState extends State<FarmerInsert> {
                         ),
                         TextFormField(
                           decoration: InputDecoration(
-                            labelText: 'กรอกชื่อจริง',
+                            labelText: 'กรอกชื่อร้าน',
                           ),
                           validator:
                               RequiredValidator(errorText: "กรุณากรอกชื่อ"),
@@ -82,7 +82,7 @@ class _FarmerInsertState extends State<FarmerInsert> {
                         ),
                         SizedBox(height: 10),
                         Text(
-                          'นามสกุลชาวสวน',
+                          'ชื่อจริง',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -90,7 +90,27 @@ class _FarmerInsertState extends State<FarmerInsert> {
                         ),
                         TextFormField(
                           decoration: InputDecoration(
-                            labelText: 'กรอกนามสกุล',
+                            labelText: 'กรอกชื่อจริง',
+                          ),
+                          validator:
+                              RequiredValidator(errorText: "กรุณากรอกชื่อจริง"),
+                          onSaved: (String? Lname) {
+                            if (Lname != null) {
+                              myProfile.NameL = Lname;
+                            } else {}
+                          },
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          'นามสกุล',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextFormField(
+                          decoration: InputDecoration(
+                            labelText: 'กรอกชื่อนามสกุล',
                           ),
                           validator:
                               RequiredValidator(errorText: "กรุณากรอกนามสกุล"),
@@ -203,71 +223,7 @@ class _FarmerInsertState extends State<FarmerInsert> {
                             return null;
                           },
                         ),
-                        SizedBox(height: 16),
-                        TextFormField(
-                          controller: _accountController,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            labelText: 'เลขบัญชี',
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'กรุณากรอกเลขบัญชี';
-                            }
-                            if (value.length < 12 || value.length > 15) {
-                              return 'เลขบัญชีต้องมีความยาวระหว่าง 12-15 หลัก';
-                            }
-                            if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
-                              return 'เลขบัญชีต้องเป็นตัวเลขเท่านั้น';
-                            }
-                            return null;
-                          },
-                          onSaved: (String? accountno) {
-                            if (accountno != null) {
-                              myProfile.accountno = accountno;
-                            }
-                          },
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          'ธนาคาร',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        TextFormField(
-                          decoration: InputDecoration(
-                            labelText: 'กรอกธนาคาร',
-                          ),
-                          validator:
-                              RequiredValidator(errorText: "กรุณากรอกธนาคาร"),
-                          onSaved: (String? bankname) {
-                            if (bankname != null) {
-                              myProfile.bankname = bankname;
-                            } else {}
-                          },
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          'ชื่อบัญชี',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        TextFormField(
-                          decoration: InputDecoration(
-                            labelText: 'กรอกชื่อบัญชี',
-                          ),
-                          validator:
-                              RequiredValidator(errorText: "กรุณากรอชื่อบัญชี"),
-                          onSaved: (String? accountname) {
-                            if (accountname != null) {
-                              myProfile.accountname = accountname;
-                            } else {}
-                          },
-                        ),
+                     
                         ButtonTheme(
                           minWidth: double.infinity,
                           child: ElevatedButton(
@@ -275,6 +231,7 @@ class _FarmerInsertState extends State<FarmerInsert> {
                               if (formKey.currentState?.validate() ?? false) {
                                 formKey.currentState?.save();
                                 await _profileCollection.add({
+                                   "NameStore": myProfile.NameStore,
                                   "NameF": myProfile.NameF,
                                   "NameL": myProfile.NameL,
                                   "Address": myProfile.Address,
@@ -282,9 +239,6 @@ class _FarmerInsertState extends State<FarmerInsert> {
                                   "District": myProfile.district,
                                   "province": myProfile.province,
                                   "Teleph": myProfile.Teleph,
-                                  "accountno": myProfile.accountno,
-                                  "bankname": myProfile.bankname,
-                                  "accountname": myProfile.accountname,
                                 });
                                 formKey.currentState?.reset();
                                 showDialog(
@@ -321,6 +275,7 @@ class _FarmerInsertState extends State<FarmerInsert> {
 }
 
 class Profile {
+  late String NameStore;
   late String NameF;
   late String NameL;
   late String Address;
@@ -328,10 +283,9 @@ class Profile {
   late String subdistrict;
   late String province;
   late String Teleph;
-  late String accountno;
-  late String accountname;
-  late String bankname;
+
   Profile(
+    this.NameStore,
       this.NameF,
       this.NameL,
       this.Address,
@@ -339,9 +293,7 @@ class Profile {
       this.district,
       this.province,
       this.Teleph,
-      this.accountno,
-      this.accountname,
-      this.bankname);
+    );
 }
 
 class insertSuccessDialog extends StatelessWidget {

@@ -6,15 +6,47 @@ class displayprice extends StatefulWidget{
   @override
   _displaypriceState createState() => _displaypriceState();
 }
-class _displaypriceState extends State<displayprice>{
-   @override
+class _displaypriceState extends State<displayprice> {
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("ราคาแต่ละร้าน"),
+    return DefaultTabController(
+      length: 2, // Specify the number of tabs
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            "ราคาและที่อย่แต่ละร้าน",
+            style: TextStyle(
+              color: Colors.brown,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          bottom: TabBar(
+            tabs: [
+              Tab(text: 'ราคาแต่ละร้าน'),
+              Tab(text: 'ที่อยู่แต่ละร้าน'),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            PriceTable(priceType: 'แผ่น'), // First tab view
+            AddTab(), // Second tab view
+          ],
+        ),
       ),
-      body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection("prices").snapshots(),
+    );
+  }
+}
+ class PriceTable extends StatelessWidget {
+  final String priceType;
+
+  PriceTable({required this.priceType});
+
+  @override
+   Widget build(BuildContext context) {
+    return StreamBuilder(
+        stream: FirebaseFirestore.instance.collection("prices").orderBy("today_date", descending: true) .snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
             return Center(
@@ -119,7 +151,69 @@ class _displaypriceState extends State<displayprice>{
             ),
           );
         },
-      ),
     );
+   }
   }
-}
+  class AddTab extends StatelessWidget {
+  // final String priceType;
+
+  // PriceTable({required this.priceType});
+
+  @override
+   Widget build(BuildContext context) {
+    return StreamBuilder(
+        stream: FirebaseFirestore.instance.collection("storeprofile").snapshots(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+              return SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: DataTable(
+              columns: [
+                DataColumn(
+                  label: Text(
+                    'ชื่อร้าน',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                DataColumn(
+                  label: Text(
+                    'ที่อยู่',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                DataColumn(
+                  label: Text(
+                    'เบอร์ติดต่อ',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
+              rows: snapshot.data!.docs.map<DataRow>((document) {
+                return DataRow(cells: [
+                  DataCell(Text("${document["NameStore"]}")),
+                   DataCell(
+                    Row(
+                      children: [
+                   Text("${document["Address"]} ตำบล :${document["Subdistrict"]} อำเภอ :${document["District"]}"),
+                      ],
+                    ),
+                  ),
+                    DataCell(
+                    Row(
+                      children: [
+                        Text("${document["Teleph"]}"),
+                      ],
+                    ),
+                  ),
+                ]);
+              }).toList(),
+            ),
+          );
+        },
+    );
+   }
+  }

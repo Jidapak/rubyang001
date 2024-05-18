@@ -25,8 +25,6 @@ const List<String> TIME_SLOT = [
   '02:00 PM',
   '02:30 PM',
   '03:00 PM',
-  '03:30 PM',
-  '04:00 PM'
 ];
 
 class TimeSlot extends StatefulWidget {
@@ -43,6 +41,7 @@ class TimeSlot extends StatefulWidget {
 }
 
 class _TimeSlotState extends State<TimeSlot> {
+   String? _selectedPaymentMethod;
   final auth = FirebaseAuth.instance;
   final formKey = GlobalKey<FormState>();
   TextEditingController _controller = TextEditingController();
@@ -58,6 +57,7 @@ class _TimeSlotState extends State<TimeSlot> {
     final selectedDateTimeProvider =
         Provider.of<SelectedDateTimeProvider>(context, listen: false);
     myOrderreq = orderrequest(
+      "",
         "",
         "",
         DateFormat('dd/MM/yyyy').format(selectedDateTimeProvider.selectedDate),
@@ -65,7 +65,7 @@ class _TimeSlotState extends State<TimeSlot> {
         "",
         DateTime.now(),
         "",
-        "");
+        "","");
   }
 
   @override
@@ -105,7 +105,9 @@ class _TimeSlotState extends State<TimeSlot> {
           ),
         ],
       ),
-      body: Column(children: [
+      body: Column(
+        children: [
+            SizedBox(height: 15),
         Text(
           'ร้านรับซื้อที่เลือก : ${widget.selectedStoreName}',
           style: TextStyle(
@@ -114,6 +116,7 @@ class _TimeSlotState extends State<TimeSlot> {
             fontWeight: FontWeight.w800,
           ),
         ),
+        SizedBox(height: 10),
         Text(
           'ชนิดยาง: ${widget.rubberType}',
           style: TextStyle(
@@ -122,10 +125,42 @@ class _TimeSlotState extends State<TimeSlot> {
             fontWeight: FontWeight.w500,
           ),
         ),
+          SizedBox(height: 10),
         Text(
           'ราคาวันนี้: ${widget.priceSheets[0]}',
           style: TextStyle(color: Colors.brown[800], fontSize: 18),
         ),
+        SizedBox(height: 20),
+        Divider(),
+                  Text(
+                    'โปรดเลือกวิธีการรับเงิน:',
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.brown[800]),
+                  ),
+                  SizedBox(height: 20),
+                  RadioListTile(
+                    title: Text('วิธีโอนเงิน'),
+                    value: 'โอนเงิน',
+                    groupValue: _selectedPaymentMethod,
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedPaymentMethod = value as String?;
+                      });
+                    },
+                  ),
+                  RadioListTile(
+                    title: Text('วิธีเงินสด'),
+                    value: 'เงินสด',
+                    groupValue: _selectedPaymentMethod,
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedPaymentMethod = value as String?;
+                      });
+                    },
+                  ),
+                     Divider(),
         Container(
           color: Colors.brown,
           child: Row(
@@ -224,8 +259,9 @@ class _TimeSlotState extends State<TimeSlot> {
               if (_formKey.currentState?.validate() ?? false) {
                 _formKey.currentState?.save();
                 var id = generateRandomId(10);
-                await _orderrequestCollection.doc(id).set({
-                  // "farmer": myOrderreq.namefarmer,
+                _orderrequestCollection.doc(id).set({
+                  // // "farmer": myOrderreq.namefarmer,
+                  // "id": widget.id,
                   "price": widget.priceSheets,
                   "store": widget.selectedStoreName,
                   "date": myOrderreq.selectedDate,
@@ -234,6 +270,7 @@ class _TimeSlotState extends State<TimeSlot> {
                   "status": "ส่งคำสั่งขาย",
                   "emailfarmer": auth.currentUser?.email ?? '',
                   "rubberType": widget.rubberType,
+                  "_selectedPaymentMethod": _selectedPaymentMethod,
                 });
                 print('เลข ID ของเอกสารที่เพิ่งสร้างขึ้น: $id');
                 _formKey.currentState?.reset();
@@ -255,7 +292,7 @@ class _TimeSlotState extends State<TimeSlot> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
-                        'เลขคำสั่งซื้อ:${id} \n วันที่จะมาส่ง: $formattedDate\nเวลาที่ส่ง: $selectedTime\n ราคา: ${widget.priceSheets} \n ร้านรับซื้อ: ${widget.selectedStoreName} \n สถานะ: ส่งคำสั่งขาย \n ชนิดยาง: ${widget.rubberType}',
+                        'เลขคำสั่งซื้อ:${id} \n วันที่จะมาส่ง: $formattedDate\nเวลาที่ส่ง: $selectedTime\n ราคา: ${widget.priceSheets} \n ร้านรับซื้อ: ${widget.selectedStoreName} \n สถานะ: ส่งคำสั่งขาย \n ชนิดยาง: ${widget.rubberType} \n วิธีรับเงิน: ${ _selectedPaymentMethod}',
                       ),
                     ),
                   );
@@ -269,6 +306,7 @@ class _TimeSlotState extends State<TimeSlot> {
                         priceSheets: widget.priceSheets,
                         selectedStoreName: widget.selectedStoreName,
                         rubberType: widget.rubberType!,
+                         selectedPaymentMethod :  _selectedPaymentMethod,
                       ),
                     ),
                   );
@@ -376,7 +414,7 @@ class DynamicList {
 }
 
 class orderrequest {
-  // String id = "";
+  String id = "";
   String namefarmer = '';
   String selectedStoreName = '';
   String selectedDate = '';
@@ -385,8 +423,9 @@ class orderrequest {
   late DateTime today_date;
   late String status = '';
   late String rubberType = '';
+  late String  _selectedPaymentMethod ='';
   orderrequest(
-    // this.id,
+    this.id,
     this.namefarmer,
     this.selectedStoreName,
     this.selectedDate,
@@ -395,6 +434,7 @@ class orderrequest {
     this.today_date,
     this.status,
     this.rubberType,
+     this._selectedPaymentMethod,
   );
 }
 

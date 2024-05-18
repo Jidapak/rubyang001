@@ -33,7 +33,13 @@ class _MyFormStorePageState extends State<Form_Store> {
           if (snapshot.connectionState == ConnectionState.done) {
             return Scaffold(
               appBar: AppBar(
-                title: Text('รายละเอียดร้านค้า'),
+                title: Text('รายละเอียดร้านค้า',
+                 style: TextStyle(
+                  color: Colors.brown,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+                ),
               ),
               body: Container(
                 padding: const EdgeInsets.all(16.0),
