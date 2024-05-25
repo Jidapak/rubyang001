@@ -1,123 +1,166 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:rub_yang/Pages/login.dart';
 import 'package:rub_yang/loginrole/login_pagerole.dart';
 
-class RubyangStore extends StatelessWidget {
-  // final String selectedStoreName;
-  // final num priceSheets;
-  // RubyangStore({required this.priceSheets, required this.selectedStoreName});
+class RubyangStore extends StatefulWidget {
+  @override
+  State<RubyangStore> createState() => _RubyangStoreState();
+}
+
+class _RubyangStoreState extends State<RubyangStore> {
+  final auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'ผู้ใช้งาน : ${FirebaseAuth.instance.currentUser?.email ?? ''}',
-          style: TextStyle(
-              fontSize: 16,
-              color: Colors.brown[500],
-              fontWeight: FontWeight.bold),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              logout(context);
-            },
-            icon: Icon(
-              Icons.logout_outlined,
-            size: 25,
-            color:  Colors.brown[500],
-            ),
-          )
-        ],
-      ),
       body: Stack(
         children: [
-          SingleChildScrollView(
-            child: Container(
-              margin: EdgeInsets.only(top: 140),
-              width: double.infinity,
-              height: 460,
-              decoration: BoxDecoration(
-                color: Colors.brown,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    SizedBox(height:220),
-                    Text(
-                      'ร้านรับซื้อยางพารา',
+          Container(
+            margin: EdgeInsets.only(top: 140),
+            width: double.infinity,
+            height: 460,
+            decoration: BoxDecoration(
+              color: Colors.brown,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  SizedBox(height: 235),
+                  Text(
+                    'เพื่อนชาวสวนยางสุราษฎร์ธานี',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24.0,
+                      color: Colors.white60,
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Expanded(
+                    child: Text(
+                      'รับยางว่องไว ใส่ใจคุณภาพ \n ดูแลพัฒนา ยกระดับคุณภาพ',
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 30.0,
+                        fontSize: 16.0,
                         color: Colors.white60,
                       ),
+                      textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: 10),
-                    Expanded(
+                  ),
+                  SizedBox(height: 30),
+                  Container(
+                    margin: EdgeInsets.only(top: 10),
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/14');
+                      },
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.white70),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                        ),
+                      ),
                       child: Text(
-                        'จังหวัดสุราษฎร์ธานี',
+                        'เริ่มใช้งาน',
                         style: TextStyle(
-                          fontSize: 20.0,
-                          color: Colors.white60,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    SizedBox(height: 30),
-                    Container(
-                      margin: EdgeInsets.only(top: 10),
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/14');
-                        },
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(Colors.white70),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                          ),
-                        ),
-                        child: Text(
-                          'เริ่มใช้งาน',
-                          style: TextStyle(
-                            color: Colors.brown,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          color: Colors.brown,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
           Container(
-            margin: EdgeInsets.only(top: 20),
+            margin: EdgeInsets.only(top: 30),
             width: double.infinity,
             child: Image.asset(
               'images/store1.png',
-              height:380,
+              height: 400,
+            ),
+          ),
+          Stack(
+            children: [
+              _ListContainer(),
+            ],
+          ),
+          Positioned(
+            top: 46,
+            right: 65,
+            child: Text(
+              auth.currentUser?.email ?? '',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.black87,
+              ),
+            ),
+          ),
+          Positioned(
+            top: 32,
+            right: 12,
+            child: IconButton(
+              onPressed: () {
+                auth.signOut().then((value) {
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) {
+                    return LoginPage();
+                  }));
+                });
+              },
+              icon: Icon(Icons.logout_outlined),
+              color: Colors.black87,
+              iconSize: 26,
             ),
           ),
         ],
       ),
     );
   }
-}
 
-Future<void> logout(BuildContext context) async {
-  CircularProgressIndicator();
-  await FirebaseAuth.instance.signOut();
-  Navigator.pushReplacement(
-    context,
-    MaterialPageRoute(
-      builder: (context) => Login_Page(),
-    ),
-  );
+  Widget _ListContainer() {
+    return Positioned(
+      top: 650,
+      left: 2.5,
+      right: 2.5,
+      child: Column(
+        children: [
+          Container(
+            width: double.infinity,
+            margin: EdgeInsets.only(left: 4.0, right: 4.0),
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/contact');
+              },
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.brown),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+                padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                  EdgeInsets.all(16.0),
+                ),
+              ),
+              child: Text(
+                'ติดต่อเรา',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.brown[200],
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

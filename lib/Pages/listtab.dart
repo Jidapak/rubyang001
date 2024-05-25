@@ -13,6 +13,7 @@ import 'package:rub_yang/storeview/confirmbk.dart';
 import 'package:rub_yang/storeview/homestore.dart';
 import 'package:rub_yang/storeview/insertvalue.dart';
 import 'package:rub_yang/storeview/ordercusto.dart';
+import 'package:rub_yang/storeview/priceapi.dart';
 import 'package:rub_yang/storeview/pricevalue.dart';
 import 'package:rub_yang/storeview/quallityyang.dart';
 
@@ -152,7 +153,8 @@ class ListTab extends StatelessWidget {
                         Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => PriceValue(
+                          builder: (context) =>PriceAPI(
+                          // builder: (context) => PriceValue(
                           ),
                         ),
                        );

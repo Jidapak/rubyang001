@@ -122,22 +122,22 @@ ListItem(
       title: 'รายงานข้อมูลชาวสวนสำหรับส่งกยท',
       details2: 'รายงานข้อมูลชาวสวนสำหรับส่งกยท',
     ),
-    ListItem(
-      title: 'ประวัติย้อนหลังส่งโรงงาน',
-      details2: 'ประวัติย้อนหลังส่งโรงงานแต่ละรอบ',
-    ),
+    // ListItem(
+    //   title: 'ประวัติย้อนหลังส่งโรงงาน',
+    //   details2: 'ประวัติย้อนหลังส่งโรงงานแต่ละรอบ',
+    // ),
     ListItem(
       title: 'อัพเดทแคมเปญกยท',
       details2: 'อัพเดทแคมเปญกยท',
     ),
-     ListItem(
-      title:  'อัพเดทราคากลาง',
-      details2: '1.ราคาเปิดกยทแต่ละวัน จะแบ่งเป็น \n1.1.ยางแผ่นดิบ \n1.2 น้ำยางสด ณโรงงาน\n1.3.Rss3 \n 2.ราคาที่ให้พิเศษ ',
-    ),
-     ListItem(
-      title: 'กยท.ใกล้คุณ',
-      details2: 'การยางแห่งประเทศไทยแต่ละสาขาในจังหวัดสุราษฎร์',
-    ),
+    //  ListItem(
+    //   title:  'อัพเดทราคากลาง',
+    //   details2: '1.ราคาเปิดกยทแต่ละวัน จะแบ่งเป็น \n1.1.ยางแผ่นดิบ \n1.2 น้ำยางสด ณโรงงาน\n1.3.\n 2.ราคาที่ให้พิเศษ ',
+    // ),
+    //  ListItem(
+    //   title: 'กยท.ใกล้คุณ',
+    //   details2: 'การยางแห่งประเทศไทยแต่ละสาขาในจังหวัดสุราษฎร์',
+    // ),
   ListItem(
     title: 'คุณภาพยางพาราชาวสวน',
     details2: 'เช็คคุณภาพควรเข้าร่วมการอบรมพัฒนาคุณภาพ?',
@@ -166,15 +166,15 @@ ListItem(
                         ),
                       );
                     }
-                    else if (index == 1){
-                        Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>Factory_Infor(
-                          ),
-                        ),
-                       );
-                      }
+                    // else if (index == 1){
+                    //     Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //       builder: (context) =>Factory_Infor(
+                    //       ),
+                    //     ),
+                    //    );
+                    //   }
                       //   else if (index == 3){
                       //   Navigator.push(
                       //   context,
@@ -184,15 +184,15 @@ ListItem(
                       //   ),
                       //  );
                       // }
-                       else if (index == 4){
+                       else if (index == 2){
                         Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>ListKanyang(
+                          builder: (context) =>Quanlity(
                           ),
                         ),
                        );
-                      }else if (index == 2){
+                      }else if (index == 1){
                         Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -201,23 +201,23 @@ ListItem(
                         ),
                        );
                       }
-                      else if (index == 3){
-                        Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>InsertValue(
-                          ),
-                        ),
-                       );
-                      }
-                       else if (index == 5){
-                        Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>Quanlity(),
-                        ),
-                       );
-                      }
+                      // else if (index == 2){
+                      //   Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) =>InsertValue(
+                      //     ),
+                      //   ),
+                      //  );
+                      // }
+                      //  else if (index == 5){
+                      //   Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) =>Quanlity(),
+                      //   ),
+                      //  );
+                      // }
                   }, 
             ),
           );

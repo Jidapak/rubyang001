@@ -22,6 +22,7 @@ class TransferPaymentPage extends StatefulWidget {
   @override
   _TransferPaymentPageState createState() => _TransferPaymentPageState();
 }
+
 class _TransferPaymentPageState extends State<TransferPaymentPage> {
   String? _selectedPaymentMethod;
   bool _isTransferring = false;
@@ -58,8 +59,6 @@ class _TransferPaymentPageState extends State<TransferPaymentPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  // SizedBox(height: 40), // Removed to move content closer to the top
-
                   SizedBox(height: 20),
                   Container(
                     width: MediaQuery.of(context).size.width * 0.9,
@@ -78,8 +77,8 @@ class _TransferPaymentPageState extends State<TransferPaymentPage> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                               Text(
-                              'อีเมล์ลูกค้า : ${widget.selectedStoreName}',
+                            Text(
+                              'ร้านที่เลือก : ${widget.selectedStoreName}',
                               style: TextStyle(
                                 fontSize: 20.0,
                                 color: Colors.white,
@@ -102,7 +101,7 @@ class _TransferPaymentPageState extends State<TransferPaymentPage> {
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
-                             Text(
+                            Text(
                               'ชนิดยาง : ${widget.Type}',
                               style: TextStyle(
                                 fontSize: 20.0,
@@ -111,7 +110,7 @@ class _TransferPaymentPageState extends State<TransferPaymentPage> {
                               ),
                             ),
                             Text(
-                              'ยอดที่ต้องจ่าย : ${widget.totalPrice..toStringAsFixed(2)}',
+                              'ยอดที่ต้องจ่าย : ${widget.totalPrice.toStringAsFixed(2)}',
                               style: TextStyle(
                                 fontSize: 20.0,
                                 color: Colors.white,
@@ -150,8 +149,7 @@ class _TransferPaymentPageState extends State<TransferPaymentPage> {
                                 onPressed: _isTransferring
                                     ? null
                                     : () {
-                                        _transferMoney(
-                                            context); // Pass the context argument here
+                                        _transferMoney(context, farmerprofile);
                                         FirebaseFirestore.instance
                                             .collection("orderrequet")
                                             .doc(widget.orderId)
@@ -242,14 +240,20 @@ class _TransferPaymentPageState extends State<TransferPaymentPage> {
   }
 
   void _printDocument(DocumentSnapshot document) async {
+    // Get the current date and time
+    final now = DateTime.now();
+    final formattedDate = '${now.day}.${now.month}.${now.year}_${now.hour}.${now.minute}.${now.second}';
+    final pdfFileName = 'sliptranf_$formattedDate.pdf'; 
     Printing.layoutPdf(
       onLayout: (format) async => await _generatePdf(document),
+      name: pdfFileName, 
     );
   }
 
   Future<Uint8List> _generatePdf(DocumentSnapshot farmerData) async {
     final pdf = pw.Document();
     final font = await PdfGoogleFonts.sarabunRegular();
+
     final Uint8List logoImageBytes =
         (await rootBundle.load("icons/logorubyangsurrat.png"))
             .buffer
@@ -260,7 +264,7 @@ class _TransferPaymentPageState extends State<TransferPaymentPage> {
       pw.Page(
         build: (context) {
           return pw.Column(
-            crossAxisAlignment: pw.CrossAxisAlignment.start, 
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
               pw.Header(
                 level: 0,
@@ -289,7 +293,7 @@ class _TransferPaymentPageState extends State<TransferPaymentPage> {
                 'อีเมล์ลูกค้า: ${widget.email}',
                 style: pw.TextStyle(font: font, fontSize: 16),
               ),
-               pw.Text(
+              pw.Text(
                 'ร้านรับซื้อ: ${widget.selectedStoreName}',
                 style: pw.TextStyle(font: font, fontSize: 16),
               ),
@@ -320,7 +324,7 @@ class _TransferPaymentPageState extends State<TransferPaymentPage> {
               pw.Divider(),
               pw.SizedBox(height: 10),
               pw.Text(
-                'ยอดที่จ่าย: ${widget.totalPrice} บาท',
+                'ยอดที่จ่าย: ${widget.totalPrice.toStringAsFixed(2)} บาท',
                 style: pw.TextStyle(font: font, fontSize: 16),
               ),
               pw.SizedBox(height: 20),
@@ -339,11 +343,37 @@ class _TransferPaymentPageState extends State<TransferPaymentPage> {
     return pdf.save();
   }
 
-// ฟังก์ชัน _transferMoney() เพื่อโอนเงินและแสดงสถานะการโอนเงินผ่าน showDialog()
-  void _transferMoney(BuildContext context) {
-    // จำลองการโอนเงิน
-    Future.delayed(Duration(seconds: 2), () {
-      // หลังจาก 2 วินาที แสดงสถานะการโอนเงินผ่าน showDialog()
+  void _transferMoney(BuildContext context, DocumentSnapshot farmerData) {
+    setState(() {
+      _isTransferring = true;
+    });
+
+    // Simulate money transfer
+    Future.delayed(Duration(seconds: 2), () async {
+      // Save order details to Firestore
+      try {
+        final ref = FirebaseFirestore.instance.collection('printslip').doc(widget.orderId);
+        await ref.set({
+          'orderId': widget.orderId,
+          'email': widget.email,
+          'selectedStoreName': widget.selectedStoreName,
+          'type': widget.Type,
+          'totalPrice': widget.totalPrice,
+          'bankname': farmerData['bankname'],
+          'accountno': farmerData['accountno'],
+          'accountname': farmerData['accountname'],
+          'paymentMethod': 'โอนเงิน',
+          'createdAt': FieldValue.serverTimestamp(),
+        });
+        print('Order details saved to Firestore successfully');
+      } catch (e) {
+        print('Error saving order details to Firestore: $e');
+      }
+
+      setState(() {
+        _isTransferring = false;
+      });
+
       showDialog(
         context: context,
         builder: (BuildContext context) {

@@ -10,21 +10,9 @@ import 'package:rub_yang/storeview/confirmbk.dart';
 import 'package:rub_yang/storeview/ordercusto.dart';
 
 const List<String> TIME_SLOT = [
-  '07:30 AM',
-  '08:00 AM',
-  '08:30 AM',
-  '09:00 AM',
-  '09:30 AM',
-  '10:00 AM',
-  '10:30 AM',
-  '11:00 AM',
-  '11:30 AM',
-  '12:00 PM',
-  '01:00 PM',
-  '01:30 PM',
-  '02:00 PM',
-  '02:30 PM',
-  '03:00 PM',
+  '07:30 AM', '08:00 AM', '08:30 AM', '09:00 AM', '09:30 AM',
+  '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM', '12:00 PM',
+  '01:00 PM', '01:30 PM', '02:00 PM', '02:30 PM', '03:00 PM',
 ];
 
 class TimeSlot extends StatefulWidget {
@@ -41,46 +29,43 @@ class TimeSlot extends StatefulWidget {
 }
 
 class _TimeSlotState extends State<TimeSlot> {
-   String? _selectedPaymentMethod;
+  String? _selectedPaymentMethod;
   final auth = FirebaseAuth.instance;
   final formKey = GlobalKey<FormState>();
   TextEditingController _controller = TextEditingController();
   late CollectionReference _orderrequestCollection;
   late Future<FirebaseApp> _firebase;
   late orderrequest myOrderreq;
+
   @override
   void initState() {
     super.initState();
     _firebase = Firebase.initializeApp();
-    _orderrequestCollection =
-        FirebaseFirestore.instance.collection("orderrequet");
-    final selectedDateTimeProvider =
-        Provider.of<SelectedDateTimeProvider>(context, listen: false);
+    _orderrequestCollection = FirebaseFirestore.instance.collection("orderrequet");
+    final selectedDateTimeProvider = Provider.of<SelectedDateTimeProvider>(context, listen: false);
     myOrderreq = orderrequest(
       "",
-        "",
-        "",
-        DateFormat('dd/MM/yyyy').format(selectedDateTimeProvider.selectedDate),
-        "",
-        "",
-        DateTime.now(),
-        "",
-        "","");
+      "",
+      "",
+      DateFormat('dd/MM/yyyy').format(selectedDateTimeProvider.selectedDate),
+      "",
+      "",
+      DateTime.now(),
+      "",
+      "",
+      "",
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final selectedDate =
-        Provider.of<SelectedDateTimeProvider>(context).selectedDate;
-    final selectedTime =
-        Provider.of<SelectedDateTimeProvider>(context).selectedTime;
-    final selectedStore =
-        Provider.of<SelectedDateTimeProvider>(context).selectedStoreName;
+    final selectedDate = Provider.of<SelectedDateTimeProvider>(context).selectedDate;
+    final selectedTime = Provider.of<SelectedDateTimeProvider>(context).selectedTime;
+    final selectedStore = Provider.of<SelectedDateTimeProvider>(context).selectedStoreName;
     final status = Provider.of<SelectedDateTimeProvider>(context).status;
-    final selectedTimeProvider =
-        Provider.of<SelectedDateTimeProvider>(context, listen: false);
-    GlobalKey<FormState> _formKey =
-        GlobalKey<FormState>(); // Initialize _formKey here
+    final selectedTimeProvider = Provider.of<SelectedDateTimeProvider>(context, listen: false);
+    GlobalKey<FormState> _formKey = GlobalKey<FormState>(); // Initialize _formKey here
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -107,225 +92,203 @@ class _TimeSlotState extends State<TimeSlot> {
       ),
       body: Column(
         children: [
-            SizedBox(height: 15),
-        Text(
-          'ร้านรับซื้อที่เลือก : ${widget.selectedStoreName}',
-          style: TextStyle(
-            color: Colors.brown[800],
-            fontSize: 18,
-            fontWeight: FontWeight.w800,
+          SizedBox(height: 15),
+          Text(
+            'ร้านรับซื้อที่เลือก : ${widget.selectedStoreName}',
+            style: TextStyle(
+              color: Colors.brown[800],
+              fontSize: 18,
+              fontWeight: FontWeight.w800,
+            ),
           ),
-        ),
-        SizedBox(height: 10),
-        Text(
-          'ชนิดยาง: ${widget.rubberType}',
-          style: TextStyle(
-            color: Colors.brown[800],
-            fontSize: 18,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
           SizedBox(height: 10),
-        Text(
-          'ราคาวันนี้: ${widget.priceSheets[0]}',
-          style: TextStyle(color: Colors.brown[800], fontSize: 18),
-        ),
-        SizedBox(height: 20),
-        Divider(),
-                  Text(
-                    'โปรดเลือกวิธีการรับเงิน:',
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.brown[800]),
-                  ),
-                  SizedBox(height: 20),
-                  RadioListTile(
-                    title: Text('วิธีโอนเงิน'),
-                    value: 'โอนเงิน',
-                    groupValue: _selectedPaymentMethod,
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedPaymentMethod = value as String?;
-                      });
-                    },
-                  ),
-                  RadioListTile(
-                    title: Text('วิธีเงินสด'),
-                    value: 'เงินสด',
-                    groupValue: _selectedPaymentMethod,
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedPaymentMethod = value as String?;
-                      });
-                    },
-                  ),
-                     Divider(),
-        Container(
-          color: Colors.brown,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Column(
-                      children: [
-                        Text(
-                          '${DateFormat.MMMM().format(selectedDate)}',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        Text(
-                          'วันนี้: ${DateFormat('dd/MM/yyyy').format(selectedDate)}',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        Expanded(
-          child: GridView.builder(
-            itemCount: TIME_SLOT.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-            ),
-            itemBuilder: (context, index) => GestureDetector(
-              onTap: () {
-                if (!selectedTime.contains(TIME_SLOT[index])) {
-                  if (selectedTimeProvider
-                              .selectedCountPerSlot?[TIME_SLOT[index]]
-                              ?.compareTo(6) !=
-                          null &&
-                      selectedTimeProvider
-                              .selectedCountPerSlot![TIME_SLOT[index]]!
-                              .compareTo(6) >=
-                          0) {
-                    return;
-                  }
-                  selectedTimeProvider.selectTime(TIME_SLOT[index]);
-                  myOrderreq.selectedTime = TIME_SLOT[index];
-                } else {}
-              },
-              child: Card(
-                color: selectedTime.contains(TIME_SLOT[index])
-                    ? Colors.white10
-                    : (selectedTime.isNotEmpty &&
-                            selectedTime[0] == TIME_SLOT[index]
-                        ? Colors.white54
-                        : Colors.white),
-                child: GridTile(
-                  header: selectedTime.isNotEmpty &&
-                          selectedTime[0] == TIME_SLOT[index]
-                      ? Icon(Icons.check)
-                      : null,
-                  child: Center(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('${TIME_SLOT[index]}'),
-                        Text(selectedTime.contains(TIME_SLOT[index])
-                            ? (selectedTimeProvider.selectedCountPerSlot?[
-                                            TIME_SLOT[index]] !=
-                                        null &&
-                                    (selectedTimeProvider.selectedCountPerSlot?[
-                                                TIME_SLOT[index]] ??
-                                            0) >
-                                        6
-                                ? 'Full (${selectedTimeProvider.selectedCountPerSlot![TIME_SLOT[index]]})'
-                                : 'Available (${selectedTimeProvider.selectedCountPerSlot![TIME_SLOT[index]]})')
-                            : 'Available (${selectedTimeProvider.selectedCountPerSlot![TIME_SLOT[index]]})')
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+          Text(
+            'ชนิดยาง: ${widget.rubberType}',
+            style: TextStyle(
+              color: Colors.brown[800],
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
             ),
           ),
-        ),
-        Form(
-          key: _formKey,
-          child: ElevatedButton(
-            onPressed: () async {
-              if (_formKey.currentState?.validate() ?? false) {
-                _formKey.currentState?.save();
-                var id = generateRandomId(10);
-                _orderrequestCollection.doc(id).set({
-                  // // "farmer": myOrderreq.namefarmer,
-                  // "id": widget.id,
-                  "price": widget.priceSheets,
-                  "store": widget.selectedStoreName,
-                  "date": myOrderreq.selectedDate,
-                  "time": myOrderreq.selectedTime,
-                  "today": myOrderreq.today_date,
-                  "status": "ส่งคำสั่งขาย",
-                  "emailfarmer": auth.currentUser?.email ?? '',
-                  "rubberType": widget.rubberType,
-                  "_selectedPaymentMethod": _selectedPaymentMethod,
-                });
-                print('เลข ID ของเอกสารที่เพิ่งสร้างขึ้น: $id');
-                _formKey.currentState?.reset();
-                final selectedDateTimeProvider =
-                    Provider.of<SelectedDateTimeProvider>(context,
-                        listen: false);
-                final selectedDate = selectedDateTimeProvider.selectedDate;
-                final selectedTime =
-                    selectedDateTimeProvider.selectedTime.isNotEmpty
-                        ? selectedDateTimeProvider.selectedTime[0]
-                        : '';
-                if (selectedTime.isNotEmpty) {
-                  final formattedDate =
-                      DateFormat('dd/MM/yyyy').format(selectedDate);
-                  selectedDateTimeProvider.setStoreAndPrice(
-                      store: widget.selectedStoreName,
-                      prices: widget.priceSheets);
-                  selectedDateTimeProvider.setStatus("ส่งคำสั่งขาย");
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        'เลขคำสั่งซื้อ:${id} \n วันที่จะมาส่ง: $formattedDate\nเวลาที่ส่ง: $selectedTime\n ราคา: ${widget.priceSheets} \n ร้านรับซื้อ: ${widget.selectedStoreName} \n สถานะ: ส่งคำสั่งขาย \n ชนิดยาง: ${widget.rubberType} \n วิธีรับเงิน: ${ _selectedPaymentMethod}',
-                      ),
-                    ),
-                  );
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                 builder: (context) => ConfirmOrderPage(
-                        id: id,
-                        formattedDate: formattedDate,
-                        selectedTime: selectedTime,
-                        priceSheets: widget.priceSheets,
-                        selectedStoreName: widget.selectedStoreName,
-                        rubberType: widget.rubberType!,
-                         selectedPaymentMethod :  _selectedPaymentMethod,
-                      ),
-                    ),
-                  );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('กรุณาเลือกเวลาก่อน'),
-                    ),
-                  );
-                }
-              }
+          SizedBox(height: 10),
+          Text(
+            'ราคาวันนี้: ${widget.priceSheets[0]}',
+            style: TextStyle(color: Colors.brown[800], fontSize: 18),
+          ),
+          SizedBox(height: 20),
+          Divider(),
+          Text(
+            'โปรดเลือกวิธีการรับเงิน:',
+            style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.brown[800]),
+          ),
+          SizedBox(height: 20),
+          RadioListTile(
+            title: Text('วิธีโอนเงิน'),
+            value: 'โอนเงิน',
+            groupValue: _selectedPaymentMethod,
+            onChanged: (value) {
+              setState(() {
+                _selectedPaymentMethod = value as String?;
+              });
             },
-            child: const Text('ส่งข้อมูล'),
-            style: ElevatedButton.styleFrom(
-              textStyle: TextStyle(fontSize: 18),
+          ),
+          RadioListTile(
+            title: Text('วิธีเงินสด'),
+            value: 'เงินสด',
+            groupValue: _selectedPaymentMethod,
+            onChanged: (value) {
+              setState(() {
+                _selectedPaymentMethod = value as String?;
+              });
+            },
+          ),
+          Divider(),
+          Container(
+            color: Colors.brown,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Column(
+                        children: [
+                          Text(
+                            '${DateFormat.MMMM().format(selectedDate)}',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          Text(
+                            'วันนี้: ${DateFormat('dd/MM/yyyy').format(selectedDate)}',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-        ),
-      ]),
+          Expanded(
+            child: GridView.builder(
+              itemCount: TIME_SLOT.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+              ),
+              itemBuilder: (context, index) {
+                final slot = TIME_SLOT[index];
+                final isSlotSelected = selectedTime.contains(slot);
+                final currentCount = selectedTimeProvider.selectedCountPerSlot?[slot] ?? 0;
+                return GestureDetector(
+                  onTap: () {
+                    if (isSlotSelected || currentCount >= 6) {
+                      return;
+                    }
+                    selectedTimeProvider.selectTime(slot);
+                    myOrderreq.selectedTime = slot;
+                  },
+                  child: Card(
+                    color: isSlotSelected ? Colors.white10 : Colors.white,
+                    child: GridTile(
+                      header: isSlotSelected ? Icon(Icons.check) : null,
+                      child: Center(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(slot),
+                            Text(
+                              currentCount >= 6
+                                  ? 'Full ($currentCount)'
+                                  : 'Available ($currentCount)',
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          Form(
+            key: _formKey,
+            child: ElevatedButton(
+              onPressed: () async {
+                if (_formKey.currentState?.validate() ?? false) {
+                  _formKey.currentState?.save();
+                  var id = generateRandomId(10);
+                  _orderrequestCollection.doc(id).set({
+                    "price": widget.priceSheets,
+                    "store": widget.selectedStoreName,
+                    "date": myOrderreq.selectedDate,
+                    "time": myOrderreq.selectedTime,
+                    "today": myOrderreq.today_date,
+                    "status": "ส่งคำสั่งขาย",
+                    "emailfarmer": auth.currentUser?.email ?? '',
+                    "rubberType": widget.rubberType,
+                    "_selectedPaymentMethod": _selectedPaymentMethod,
+                  });
+                  print('เลข ID ของเอกสารที่เพิ่งสร้างขึ้น: $id');
+                  _formKey.currentState?.reset();
+                  final selectedDateTimeProvider =
+                      Provider.of<SelectedDateTimeProvider>(context, listen: false);
+                  final selectedDate = selectedDateTimeProvider.selectedDate;
+                  final selectedTime = selectedDateTimeProvider.selectedTime.isNotEmpty
+                      ? selectedDateTimeProvider.selectedTime[0]
+                      : '';
+                  if (selectedTime.isNotEmpty) {
+                    final formattedDate = DateFormat('dd/MM/yyyy').format(selectedDate);
+                    selectedDateTimeProvider.setStoreAndPrice(
+                        store: widget.selectedStoreName,
+                        prices: widget.priceSheets);
+                    selectedDateTimeProvider.setStatus("ส่งคำสั่งขาย");
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'เลขคำสั่งซื้อ:${id} \n วันที่จะมาส่ง: $formattedDate\nเวลาที่ส่ง: $selectedTime\n ราคา: ${widget.priceSheets} \n ร้านรับซื้อ: ${widget.selectedStoreName} \n สถานะ: ส่งคำสั่งขาย \n ชนิดยาง: ${widget.rubberType} \n วิธีรับเงิน: ${_selectedPaymentMethod}',
+                        ),
+                      ),
+                    );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ConfirmOrderPage(
+                          id: id,
+                          formattedDate: formattedDate,
+                          selectedTime: selectedTime,
+                          priceSheets: widget.priceSheets,
+                          selectedStoreName: widget.selectedStoreName,
+                          rubberType: widget.rubberType!,
+                          selectedPaymentMethod: _selectedPaymentMethod,
+                        ),
+                      ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('กรุณาเลือกเวลาก่อน'),
+                      ),
+                    );
+                  }
+                }
+              },
+              child: const Text('ส่งข้อมูล'),
+              style: ElevatedButton.styleFrom(
+                textStyle: TextStyle(fontSize: 18),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -343,6 +306,7 @@ class SelectedDateTimeProvider extends ChangeNotifier {
   String get selectedStoreName => _selectedStoreName;
   List<num> get priceSheets => _priceSheets; // Getter for priceSheets
   String get status => _status;
+
   void setStoreAndPrice({required String store, required List<num> prices}) {
     _selectedStoreName = store;
     _priceSheets = prices; // Set the priceSheets
@@ -423,7 +387,7 @@ class orderrequest {
   late DateTime today_date;
   late String status = '';
   late String rubberType = '';
-  late String  _selectedPaymentMethod ='';
+  late String _selectedPaymentMethod = '';
   orderrequest(
     this.id,
     this.namefarmer,
@@ -434,7 +398,7 @@ class orderrequest {
     this.today_date,
     this.status,
     this.rubberType,
-     this._selectedPaymentMethod,
+    this._selectedPaymentMethod,
   );
 }
 

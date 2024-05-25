@@ -1,4 +1,6 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ListOrderReq extends StatefulWidget {
@@ -7,24 +9,37 @@ class ListOrderReq extends StatefulWidget {
 }
 
 class _ListOrderReqState extends State<ListOrderReq> with SingleTickerProviderStateMixin {
- late TabController _tabController;
+  late TabController _tabController;
+  String? userEmail;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+    _getCurrentUserEmail();
+  }
+
+  void _getCurrentUserEmail() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      String email = user.email ?? "";
+      setState(() {
+        userEmail = email;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("รายการขายยาง",
-        style: TextStyle(
-                  color: Colors.brown,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+        title: Text(
+          "รายการขายยาง",
+          style: TextStyle(
+            color: Colors.brown,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         bottom: TabBar(
           controller: _tabController,
@@ -35,7 +50,7 @@ class _ListOrderReqState extends State<ListOrderReq> with SingleTickerProviderSt
           ],
         ),
       ),
-       body: TabBarView(
+      body: TabBarView(
         controller: _tabController,
         children: [
           buildTabContent("ส่งคำสั่งขาย"),
@@ -45,11 +60,19 @@ class _ListOrderReqState extends State<ListOrderReq> with SingleTickerProviderSt
       ),
     );
   }
- Widget buildTabContent(String status) {
+
+  Widget buildTabContent(String status) {
+    if (userEmail == null) {
+      return Center(child: CircularProgressIndicator());
+    }
+
+    String storeName = userEmail == "lekin@gmail.com" ? "เล็กอิน" : "โกโหน่ง";
+
     return StreamBuilder(
       stream: FirebaseFirestore.instance
           .collection("orderrequet")
-          .where("status", isEqualTo: status) // กรองตามสถานะ
+          .where("status", isEqualTo: status)
+          .where("store", isEqualTo: storeName) // Filter by store name
           .snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) {
@@ -84,11 +107,10 @@ class _ListOrderReqState extends State<ListOrderReq> with SingleTickerProviderSt
                               ),
                             ),
                             Text("วันนี้: ${orderrequetDocument["date"]}"),
-                            Text(
-                                "เวลาที่เลือก: ${orderrequetDocument["time"]}"),
-                            Text(
-                                "ร้านรับซื้อ: ${orderrequetDocument["store"]}"),
+                            Text("เวลาที่เลือก: ${orderrequetDocument["time"]}"),
+                            Text("ร้านรับซื้อ: ${orderrequetDocument["store"]}"),
                             Text("ราคา: ${orderrequetDocument["price"]}"),
+                            Text("รูปแบบการจ่ายเงิน: ${orderrequetDocument["_selectedPaymentMethod"]}"),
                             SizedBox(height: 10),
                             Container(
                               decoration: BoxDecoration(
@@ -110,7 +132,7 @@ class _ListOrderReqState extends State<ListOrderReq> with SingleTickerProviderSt
                       ),
                     ),
                   )
-                : Container(); 
+                : Container();
           }).toList(),
         );
       },

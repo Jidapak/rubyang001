@@ -200,28 +200,31 @@ class _LoginPageState extends State<Login_Page> {
   }
 
   Future<void> signIn(String email, String password) async {
-    print("signindiscall");
-    try {
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      print("signinsuccess");
-      await route(userCredential.user!);
-    } on FirebaseAuthException catch (e) {
-      print("erroroccured at signin");
-      if (e.code == 'ไม่พบบัญชีผู้ใช้') {
-        print('ไม่พบอีเมล์ดังกล่าว.');
-      } else if (e.code == 'รหัสผ่านไม่ถูกต้อง') {
-        print('Wrong password provided for that user.');
-      }
-      setState(() {
-        visible = false;
-      });
-    }catch(e){print("unknow error");} 
-  }
+  print("เรียกใช้เมธอดเข้าสู่ระบบ");
+  try {
+    UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+    print("เข้าสู่ระบบสำเร็จ");
+    await route(userCredential.user!);
+  } on FirebaseAuthException catch (e) {
+    print("เกิดข้อผิดพลาดขณะเข้าสู่ระบบ");
+    if (e.code == 'ไม่พบบัญชีผู้ใช้') {
+      print('ไม่พบอีเมล์ที่ระบุ');
+    } else if (e.code == 'รหัสผ่านไม่ถูกต้อง') {
+      print('รหัสผ่านที่ให้มาไม่ถูกต้อง');
+    }
+    setState(() {
+      visible = false;
+    });
+  } catch(e) {
+    print("ข้อผิดพลาดที่ไม่รู้จัก");
+  } 
+}
+
 Future<void> route(User user) async {
-  print("user$user");
+  print("ผู้ใช้: $user");
   DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
       .collection('users')
       .doc(user.uid)
@@ -247,8 +250,7 @@ Future<void> route(User user) async {
      Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          // builder: (context) => Admin(),
-            builder: (context) => LandingPage(),
+          builder: (context) => Admin(),
         ),
       );
     }

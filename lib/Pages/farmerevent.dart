@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -8,6 +9,14 @@ class Factory_Infor extends StatefulWidget {
 }
 
 class _Factory_InforState extends State<Factory_Infor> {
+  late User? _user;
+
+  @override
+  void initState() {
+    super.initState();
+    _user = FirebaseAuth.instance.currentUser;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,21 +40,30 @@ class _Factory_InforState extends State<Factory_Infor> {
         ),
       ),
       body: StreamBuilder(
-        stream:
-            FirebaseFirestore.instance.collection("factorydata").snapshots(),
+        stream: FirebaseFirestore.instance.collection("factorydata").snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (!snapshot.hasData) {
+          if (!snapshot.hasData || _user == null) {
             return Center(
               child: CircularProgressIndicator(),
             );
           }
+
+          // Filter the documents based on the user's email
+          var filteredDocs = snapshot.data!.docs.where((document) {
+            if (_user!.email == 'lekin@gmail.com') {
+              return document["namerubyang"] == 'เล็กอิน';
+            } else if (_user!.email == 'konong@gmail.com') {
+              return document["namerubyang"] == 'โกโหน่ง';
+            }
+            return false; // Return false for other cases
+          }).toList();
+
           return ListView(
-            children: snapshot.data!.docs.map((document) {
+            children: filteredDocs.map((document) {
               DateTime dateTime = DateTime.now();
               String formattedDate = DateFormat('dd/MM/yyyy').format(dateTime);
               return Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0, vertical: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.brown[800],
@@ -57,14 +75,10 @@ class _Factory_InforState extends State<Factory_Infor> {
                       children: [
                         _buildInfoRow("ร้านรับซื้อ", document["namerubyang"]),
                         _buildInfoRow("โรงงาน", document["namefactory"]),
-                        _buildInfoRow("คุณภาพยางพารา",
-                            "${document["quanlityyang"]} เปอร์เซนต์"),
-                        _buildInfoRow("จำนวนรวม",
-                            "${document["totalquantity"]} กิโลกรัม"),
-                        _buildInfoRow("ยอดเงินที่ได้รับ",
-                            "${document["totalpay"]} บาท"),
-                        _buildInfoRow("รูปแบบยางพารา",
-                            document["_radioValue12"] ?? "ไม่ระบุ"),
+                        _buildInfoRow("คุณภาพยางพารา", "${document["quanlityyang"]} เปอร์เซนต์"),
+                        _buildInfoRow("จำนวนรวม", "${document["totalquantity"]} กิโลกรัม"),
+                        _buildInfoRow("ยอดเงินที่ได้รับ", "${document["totalpay"]} บาท"),
+                        _buildInfoRow("รูปแบบยางพารา", document["_radioValue12"] ?? "ไม่ระบุ"),
                         _buildInfoRow("รอบวันที่", formattedDate),
                       ],
                     ),
@@ -111,7 +125,6 @@ class _Factory_InforState extends State<Factory_Infor> {
     );
   }
 }
-
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:flutter/material.dart';
 // import 'package:intl/intl.dart';

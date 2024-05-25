@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -13,14 +14,14 @@ class _InsertPriceState extends State<InsertPrice> {
   late Price myPrice;
   late CollectionReference _pricesCollection;
   late Future<FirebaseApp> _firebase;
-
+final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   void initState() {
     super.initState();
     _firebase = Firebase.initializeApp();
     _pricesCollection = FirebaseFirestore.instance.collection("prices");
     myPrice = Price(
-      "",
+      // "",
       "",
       "",
       "",
@@ -36,9 +37,9 @@ class _InsertPriceState extends State<InsertPrice> {
       0,
     );
   }
-
-  @override
+@override
   Widget build(BuildContext context) {
+    User? user = _auth.currentUser; // Get the current user
     return FutureBuilder(
       future: _firebase,
       builder: (context, snapshot) {
@@ -55,13 +56,26 @@ class _InsertPriceState extends State<InsertPrice> {
         if (snapshot.connectionState == ConnectionState.done) {
           return Scaffold(
             appBar: AppBar(
-              title: Text('อัพเดทราคา',
-                   style: TextStyle(
+              title: Text(
+                'อัพเดทราคา',
+                style: TextStyle(
                   color: Colors.brown,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 10.0),
+                  child: Text(
+                    user?.email ?? '', 
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.brown,
+                    ),
+                  ),
+                ),
+              ],
             ),
             body: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -71,17 +85,17 @@ class _InsertPriceState extends State<InsertPrice> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      SizedBox(height: 10),
-                      TextFormField(
-                        decoration: InputDecoration(
-                          labelText: 'IDร้านรับซื้อ',
-                        ),
-                        validator:
-                            RequiredValidator(errorText: "กรุณากรอก ID ร้าน"),
-                        onSaved: (String? id_store) {
-                          myPrice.id_store = id_store;
-                        },
-                      ),
+                      // SizedBox(height: 10),
+                      // TextFormField(
+                      //   decoration: InputDecoration(
+                      //     labelText: 'IDร้านรับซื้อ',
+                      //   ),
+                      //   validator:
+                      //       RequiredValidator(errorText: "กรุณากรอก ID ร้าน"),
+                      //   onSaved: (String? id_store) {
+                      //     myPrice.id_store = id_store;
+                      //   },
+                      // ),
                       SizedBox(height: 10),
                       TextFormField(
                         decoration: InputDecoration(
@@ -112,13 +126,13 @@ class _InsertPriceState extends State<InsertPrice> {
                           if (telnum == null || telnum.isEmpty) {
                             return 'กรุณากรอกเบอร์ติดต่อร้าน';
                           }
-                          // เช็ครูปแบบเบอร์โทรศัพท์
-                          RegExp regex = RegExp(
-                              r'^[0-9]{10}$'); // ตรวจสอบเบอร์โทรศัพท์ที่มี 10 ตัวเลข
-                          if (!regex.hasMatch(telnum)) {
-                            return 'เบอร์ติดต่อร้านไม่ถูกต้อง';
-                          }
-                          return null;
+                          // // เช็ครูปแบบเบอร์โทรศัพท์
+                          // RegExp regex = RegExp(
+                          //     r'^[0-9]{10}$'); // ตรวจสอบเบอร์โทรศัพท์ที่มี 10 ตัวเลข
+                          // if (!regex.hasMatch(telnum)) {
+                          //   return 'เบอร์ติดต่อร้านไม่ถูกต้อง';
+                          // }
+                          // return null;
                         },
                         onSaved: (telnum) {
                           myPrice.telnum = telnum;
@@ -254,7 +268,7 @@ class _InsertPriceState extends State<InsertPrice> {
                             myPrice.pricchunk_diff = myPrice.update_pricechunk -
                                 myPrice.daily_pricechunk;
                             await _pricesCollection.add({
-                              "id_store": myPrice.id_store,
+                              // "id_store": myPrice.id_store,
                               "name_store": myPrice.name_store,
                               "district": myPrice.district,
                               "telnum": myPrice.telnum,
@@ -292,7 +306,7 @@ class _InsertPriceState extends State<InsertPrice> {
 }
 
 class Price {
-  String? id_store;
+  // String? id_store;
   String? name_store;
   String? district;
   String? telnum;
@@ -307,7 +321,7 @@ class Price {
   num pricwater_diff;
   late DateTime today_date;
   Price(
-    this.id_store,
+    // this.id_store,
     this.name_store,
     this.telnum,
     this.district,

@@ -77,16 +77,19 @@ class _TotlalOrderReqState extends State<TotlalOrderReq> {
     Map<String, double> totalPricesByType,
     Map<String, double> totalWeightsByType,
   ) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => DailySummaryPage(
-          dailySummary: dailySummary,
-          totalPricesByType: totalPricesByType,
-          totalWeightsByType: totalWeightsByType,
-          selectedDate: selectedDate,
+    if (userEmail != null) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => DailySummaryPage(
+            dailySummary: dailySummary,
+            totalPricesByType: totalPricesByType,
+            totalWeightsByType: totalWeightsByType,
+            selectedDate: selectedDate,
+            userEmail: userEmail!, // Pass the userEmail here
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 
   @override
@@ -302,10 +305,12 @@ void _showDailySummary(
   Map<String, double> totalPricesByType,
   Map<String, double> totalWeightsByType,
   DateTime selectedDate,
+  String userEmail,
 ) {
   Navigator.of(context).push(
     MaterialPageRoute(
       builder: (context) => DailySummaryPage(
+         userEmail: userEmail!,
         dailySummary: dailySummary,
         totalPricesByType: totalPricesByType,
         totalWeightsByType: totalWeightsByType,

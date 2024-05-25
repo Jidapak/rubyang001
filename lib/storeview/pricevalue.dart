@@ -36,7 +36,7 @@ class _PriceValueState extends State<PriceValue> {
               columns: [
                 DataColumn(
                   label: Text(
-                    'วันที่',
+                    'วันที่และเวลา',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -62,8 +62,8 @@ class _PriceValueState extends State<PriceValue> {
               rows: snapshot.data!.docs.map<DataRow>((document) {
                 Timestamp timestamp = document["today_date"] as Timestamp;
                 DateTime dateTime = timestamp.toDate();
-                String formattedDate =
-                    DateFormat('dd/MM/yyyy').format(dateTime);
+                String formattedDate = DateFormat('dd/MM/yyyy HH:mm').format(dateTime);
+
                 return DataRow(cells: [
                   DataCell(Text(formattedDate)),
                   DataCell(
@@ -72,12 +72,11 @@ class _PriceValueState extends State<PriceValue> {
                         Text("${document["update_price_chunk"]}"),
                         SizedBox(width: 5),
                         Text(
-                          "(${document["price_diff_chunk"] > 0 ? '+' : ''}${document["price_diff_water"]})",
+                          "(${document["price_diff_chunk"] > 0 ? '+' : ''}${document["price_diff_chunk"]})",
                           style: TextStyle(
                               color: document["price_diff_chunk"] > 0
                                   ? Colors.green
-                                  : const Color.fromARGB(255, 196, 37,
-                                      25)), // Adjust color based on positive or negative difference
+                                  : const Color.fromARGB(255, 196, 37, 25)), // Adjust color based on positive or negative difference
                         ),
                       ],
                     ),
@@ -92,8 +91,7 @@ class _PriceValueState extends State<PriceValue> {
                           style: TextStyle(
                               color: document["price_diff_water"] > 0
                                   ? Colors.green
-                                  : const Color.fromARGB(255, 196, 37,
-                                      25)), // Adjust color based on positive or negative difference
+                                  : const Color.fromARGB(255, 196, 37, 25)), // Adjust color based on positive or negative difference
                         ),
                       ],
                     ),
@@ -104,12 +102,11 @@ class _PriceValueState extends State<PriceValue> {
                         Text("${document["update_price_sheet"]}"),
                         SizedBox(width: 5),
                         Text(
-                          "(${document["price_diff_sheet"] > 0 ? '+' : ''}${document["price_diff_water"]})",
+                          "(${document["price_diff_sheet"] > 0 ? '+' : ''}${document["price_diff_sheet"]})",
                           style: TextStyle(
                               color: document["price_diff_sheet"] > 0
                                   ? Colors.green
-                                  : const Color.fromARGB(255, 196, 37,
-                                      25)), // Adjust color based on positive or negative difference
+                                  : const Color.fromARGB(255, 196, 37, 25)), // Adjust color based on positive or negative difference
                         ),
                       ],
                     ),

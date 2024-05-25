@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 // import 'package:intl/date_symbol_data_file.dart';
 import 'package:provider/provider.dart';
+import 'package:rub_yang/Pages/PaymentMethode/slippay.dart';
 // import 'package:rub_yang/Pages/aboutpdf/addreport1.dart';
 import 'package:rub_yang/Pages/aboutpdf/edittoreport.dart';
 import 'package:rub_yang/Pages/aboutpdf/homereport.dart';
@@ -30,6 +31,7 @@ import 'package:rub_yang/facview/listkanyang.dart';
 import 'package:rub_yang/facview/orderfactory.dart';
 import 'package:rub_yang/facview/statusfactory.dart';
 import 'package:rub_yang/firebase_options.dart';
+import 'package:rub_yang/loginrole/contactus.dart';
 import 'package:rub_yang/loginrole/forgotpassw.dart';
 import 'package:rub_yang/loginrole/listtap2.dart';
 import 'package:rub_yang/loginrole/login_pagerole.dart';
@@ -42,6 +44,7 @@ import 'package:rub_yang/storeview/confirmbk.dart';
 import 'package:rub_yang/storeview/displaystore.dart';
 import 'package:rub_yang/storeview/formrubyang.dart';
 import 'package:rub_yang/storeview/ordercusto.dart';
+import 'package:rub_yang/storeview/priceapi.dart';
 // import 'package:rub_yang/storeview/namestore.dart';
 import 'package:rub_yang/storeview/pricevalue.dart';
 import 'package:rub_yang/Pages/home_r.dart';
@@ -103,7 +106,7 @@ class MyApp extends StatelessWidget {
         // '/1': (context) => ListStore(),
         '/1': (context) => DisplayStore(),
         '/2': (context) => OrderSend(),
-        '/3': (context) => PriceValue(),
+        '/3': (context) => PriceAPI(),
         '/7': (context) => PriceValue(),
         '/4': (context) => FarmerForm(),
         'spot_f': (context) => Spot_F(),
@@ -131,7 +134,7 @@ class MyApp extends StatelessWidget {
         //                 ),
         // '/5':(context) => StatusOrder(),
         '/fachistory': (context) => FacHistory(),
-        '/farmerevent': (context) => Factory_Infor(),
+        // '/farmerevent': (context) => Factory_Infor(),
         '/statusFac': (context) => StatusFac(),
         '/5': (context) => displayprice(),
         '/Myformstore': (context) => Form_Store(),
@@ -150,6 +153,8 @@ class MyApp extends StatelessWidget {
 
         //     ),
         '/6': (context) => ListKanyang(),
+          '/7': (context) => SlipPayment(),
+        '/contact': (context) => ContactUsPage()
         //  'cust': (context) => OrderCust( 
         //   priceSheets: priceSheets[0],
         //               selectedStoreName: selectedStoreName,),

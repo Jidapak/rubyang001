@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:rub_yang/Pages/PaymentMethode/slippay.dart';
 import 'package:rub_yang/Pages/listorderreq.dart';
 import 'package:rub_yang/Pages/showprofile.dart';
 import 'package:rub_yang/storeview/confirmbk.dart';
 import 'package:rub_yang/storeview/insertprice.dart';
 import 'package:rub_yang/storeview/ordercusto.dart';
+import 'package:rub_yang/storeview/pricestore.dart';
 import 'package:rub_yang/storeview/storedetail_Form.dart';
 import 'package:rub_yang/storeview/totalorderdaily.dart';
 
@@ -11,7 +13,8 @@ class HomeStore extends StatelessWidget {
   final String selectedStoreName;
   final num priceSheets; // Declare priceSheets as a list
   HomeStore({required this.priceSheets, required this.selectedStoreName});
-  final List<String> entries = ['A', 'B', 'C','D'];
+  final List<String> entries = ['จัดการ \n คำสั่งขาย', 'สถานะการ\nซื้อขายยาง', 'อัพเดต\n ราคารายวัน', 'ยอดรวมการ\nรับซื้อวันนี้','รายละเอียด\n การจ่ายเงิน'];
+  final List<IconData> icons = [Icons.list_alt, Icons.signal_cellular_alt, Icons.border_color_sharp, Icons.price_change_sharp, Icons.document_scanner_rounded];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,14 +36,7 @@ class HomeStore extends StatelessWidget {
           crossAxisCount: 2,
           crossAxisSpacing: 16.0,
           mainAxisSpacing: 16.0,
-          children: List.generate(4, (index) {
-            List<String> textList = [
-              'รายการออเดอร์ \n จากชาวสวน',
-              'สถานะการซื้อขายยาง',
-              'อัพเดทราคารายวัน',
-              'ยอดรวมวันนี้',
-              // 'รายละเอียดชาวสวน',
-            ];
+          children: List.generate(5, (index) {
             return GestureDetector(
               onTap: () {
                 switch (index) {
@@ -63,12 +59,13 @@ class HomeStore extends StatelessWidget {
                         ),
                       ),
                     );
-                     break;
+                    break;
                   case 2:
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => InsertPrice(),
+                        builder: (context) => PriceStore(),
+                        // builder: (context) => InsertPrice(),
                       ),
                     );
                     break;
@@ -79,16 +76,14 @@ class HomeStore extends StatelessWidget {
                         builder: (context) => TotlalOrderReq(),
                       ),
                     );
-                    // case 4:
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => showprofile(),
-                    //   ),
-                    // );
-                  default:
                     break;
-                    
+                       case 4:
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>SlipPayment(),
+                      ),
+                    );
                 }
               },
               child: Container(
@@ -106,12 +101,23 @@ class HomeStore extends StatelessWidget {
                   ],
                 ),
                 child: Center(
-                  child: Text(
-                    textList[index],
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 18.0,
-                    ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        icons[index],
+                        size: 50.0,
+                        color: Colors.brown[800], // Set icon color as needed
+                      ),
+                      SizedBox(height: 8.0),
+                      Text(
+                        entries[index],
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 18.0,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),

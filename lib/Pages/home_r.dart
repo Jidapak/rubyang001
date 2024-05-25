@@ -6,7 +6,7 @@ class HomePageR extends StatelessWidget {
     "text": 'ขายยางพารา',
   },
   1: {
-    "icon": Icons.document_scanner,
+    "icon": Icons.addchart_sharp,
     "text": 'กิจกรรมขาย\nยางของคุณ',
   },
   2: {
@@ -28,6 +28,10 @@ class HomePageR extends StatelessWidget {
       5: {
     "icon": Icons.newspaper,
     "text": ' ข่าวสาร\nการยาง',
+  },
+       6: {
+    "icon": Icons.description_sharp,
+    "text": ' ใบเสร็จ\nการขาย',
   },
 }!;
  Widget build(BuildContext context) {
