@@ -107,7 +107,7 @@ class MyApp extends StatelessWidget {
         '/1': (context) => DisplayStore(),
         '/2': (context) => OrderSend(),
         '/3': (context) => PriceAPI(),
-        '/7': (context) => PriceValue(),
+        // '/7': (context) => PriceValue(),
         '/4': (context) => FarmerForm(),
         'spot_f': (context) => Spot_F(),
         'formtrade': (context) => Formtrade(),
